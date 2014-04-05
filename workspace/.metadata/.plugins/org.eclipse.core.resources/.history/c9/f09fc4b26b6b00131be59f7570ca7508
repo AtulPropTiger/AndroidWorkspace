@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <EditText android:id="@+id/edit_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/edit_message" /> 
+        <!-- wrap_content shows text only big as needed to fit screen -->
+        <!-- if we didnt change weight it woulnd't show all of the users
+        text that they entered because it would only be as large as enter a message ()-->
+        <!--  anytime u see @ it means reference, you could remove @ and it would just display
+        string/edit_messge the string, like @+id/edit_message will go to address of edit_message and use its value -->
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_send"
+        android:onClick="sendMessage" />
+    	<!-- sendMessage area is name of the method in your activity that the system cals when 
+    	the user clicks the button -->
+    
+</LinearLayout>

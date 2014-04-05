@@ -1,0 +1,134 @@
+package com.example.scroll;
+
+import android.app.Activity;
+import android.app.WallpaperManager;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.Window;
+
+
+public class MainActivity extends Activity implements Runnable {
+
+	private static Background bg1, bg2;
+	Drawable draw;
+	Drawable fast_draw;   // use main_window.setBackgroundDrawable(fast_draw); 
+	WallpaperManager wp;
+	int height = 0;
+	int width = 0;
+	Window main_window;
+	Rect rect;
+	Rect copy_rect;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		wp  = WallpaperManager.getInstance(this);
+		draw = wp.getDrawable();
+		fast_draw = wp.getFastDrawable(); //draw above doesn't work because it does not grab wallpaper
+		//fast enough, fast_draw works :)
+		height = draw.getMinimumHeight();
+		width = draw.getMinimumWidth();
+		//this.getCurrentFocus().setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackgroundResource(R.drawable.ic_launcher);
+		//Drawable bground = this.getCurrentFocus().getBackground();
+		 //final Drawable wallpaperDrawable = wp.getFastDrawable();
+		 getWindow().setBackgroundDrawable(fast_draw); /// this works and it is beautiful
+		 main_window = getWindow();
+		 View bg_view = getWindow().getCurrentFocus();
+		 Rect rect = fast_draw.copyBounds();
+		 copy_rect = fast_draw.copyBounds();
+		Log.i("dimensions!!", " width = " + width + " height = " + height);
+		new ScrollBackGround().doInBackground();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+    
+    
+    public void start() {
+                bg1 = new Background(0,0);
+                bg2 = new Background(2160, 0);
+
+
+
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+    
+    
+
+    
+    public static Background getBg1() {
+        return bg1;
+    }
+
+    public static Background getBg2() {
+        return bg2;
+    }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+        while (true) {
+            //bg1.update();
+            //bg2.update();
+        	Log.i("this called??", "was this called the run mehtod???");
+        	copy_rect.left +=5;
+        	copy_rect.right +=5;
+        	fast_draw.setBounds(copy_rect.left, copy_rect.top, copy_rect.right, copy_rect.bottom);
+            main_window.setBackgroundDrawable(fast_draw);
+            
+            try {
+                Thread.sleep(17);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	
+	
+	public class ScrollBackGround extends AsyncTask {
+		//protected int could be protect drawable or whatever you want homes
+	     protected void doInBackground() {
+	    	 Boolean yep = true;
+	         while (true) {
+	         	Log.i("this called??", "was this called the run mehtod???");
+	         	copy_rect.left +=5;
+	         	copy_rect.right +=5;
+	         	fast_draw.setBounds(copy_rect.left, copy_rect.top, copy_rect.right, copy_rect.bottom);
+	             main_window.setBackgroundDrawable(fast_draw);
+	             try {
+	                 Thread.sleep(17);
+	             } catch (InterruptedException e) {
+	                 e.printStackTrace();
+	             }
+	             yep = false;
+	         }
+	    	 
+	         
+	     }
+
+	     protected void onPostExecute(Bitmap result) {
+	         //mImageView.setImageBitmap(result);
+	     }
+
+		@Override
+		protected Object doInBackground(Object... arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	 }
+    
+}

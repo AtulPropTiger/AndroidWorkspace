@@ -1,0 +1,264 @@
+package com.example.scroll;
+
+import android.app.Activity;
+import android.app.WallpaperManager;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.Window;
+
+
+public class MainActivity extends Activity implements Runnable {
+
+	private static Background bg1, bg2;
+	Drawable draw;
+	Drawable fast_draw;   // use main_window.setBackgroundDrawable(fast_draw); 
+	WallpaperManager wp;
+	int height = 0;
+	int width = 0;
+	Window main_window;
+	Rect rect;
+	Rect copy_rect;
+	Paint mTextPaint; 
+	Paint mPiePaint;
+	Paint mShadowPaint;
+	CustomDrawableView mCustomDrawableView;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		wp  = WallpaperManager.getInstance(this);
+		draw = wp.getDrawable();
+		fast_draw = wp.getFastDrawable(); //draw above doesn't work because it does not grab wallpaper
+		//fast enough, fast_draw works :)
+		
+		height = fast_draw.getMinimumHeight();
+		width = fast_draw.getMinimumWidth();
+		rect = new Rect(0,0,width/2,height/2);
+		//fast_draw.
+		//this.getCurrentFocus().setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackgroundResource(R.drawable.ic_launcher);
+		//Drawable bground = this.getCurrentFocus().getBackground();
+		 //final Drawable wallpaperDrawable = wp.getFastDrawable();
+		 //fast_draw.setBounds(0,0,width,height);
+		 
+		 //fast_draw.setBounds(0, height/2, width/2, 0);
+		 //getWindow().setLayout(width/2, height/2);
+		 getWindow().setBackgroundDrawable(fast_draw); /// this works and it is beautiful
+		 //fast_draw.draw(canvas);
+		 
+		 main_window = getWindow();
+		 View bg_view = getWindow().getCurrentFocus();
+		 Rect rect = fast_draw.copyBounds();
+		 copy_rect = fast_draw.copyBounds();
+		 Log.i("dimensions!!", fast_draw.getBounds() + "");
+		Log.i("dimensions!!", " width = " + width + " height = " + height);
+		//fast_draw.set
+		Rect rec2 = fast_draw.getBounds();
+	
+	 	Log.i("right = ", rec2.right + "");
+	 	Log.i("left = ", rec2.left + "");
+		//new ScrollBackGround().doInBackground();
+		
+		Thread thread = new Thread()
+		{
+		    @Override
+		    public void run() {
+		    	int count = 0;
+		    	Boolean yep = true;
+		        while(yep) {
+		        	
+		   		 Log.i("dimensions!!", fast_draw.getBounds() + "");
+		 		Log.i("dimensions!!", " width = " + width + " height = " + height);
+		        	
+		 			wp.getFastDrawable().
+				     try {
+				         Thread.sleep(17);
+				     } catch (InterruptedException e) {
+				         e.printStackTrace();
+				     }
+				     count+=1;
+				     //if(count == 500){yep = false;}
+				}
+		    }
+		};
+
+		thread.start();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+    
+    
+    public void start() {
+                bg1 = new Background(0,0);
+                bg2 = new Background(2160, 0);
+
+
+
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+    
+    
+
+    
+    public static Background getBg1() {
+        return bg1;
+    }
+
+    public static Background getBg2() {
+        return bg2;
+    }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+        while (true) {
+            //bg1.update();
+            //bg2.update();
+        	Log.i("this called??", "was this called the run mehtod???");
+        	copy_rect.left +=5;
+        	copy_rect.right +=5;
+        	fast_draw.setBounds(copy_rect.left, copy_rect.top, copy_rect.right, copy_rect.bottom);
+            main_window.setBackgroundDrawable(fast_draw);
+            
+            try {
+                Thread.sleep(17);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	
+	
+	public class ScrollBackGround extends AsyncTask {
+		//protected int could be protect drawable or whatever you want homes
+	     protected void doInBackground() {
+	    	 Boolean yep = true;
+	    	 int count = 0;
+	         while (yep) {
+	         	Log.i("this called??", "was this called the run mehtod???");
+	         	copy_rect.left +=5;
+	         	copy_rect.right +=5;
+	         	fast_draw.setBounds(copy_rect.left, copy_rect.top, copy_rect.right, copy_rect.bottom);
+	             main_window.setBackgroundDrawable(fast_draw);
+	             try {
+	                 Thread.sleep(17);
+	             } catch (InterruptedException e) {
+	                 e.printStackTrace();
+	             }
+	             count+=1;
+	             if(count == 500){yep = false;}
+	         }
+	    	 
+	         
+	     }
+
+	     protected void onPostExecute(Bitmap result) {
+	         //mImageView.setImageBitmap(result);
+	     }
+
+		@Override
+		protected Object doInBackground(Object... arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	 }
+	
+	
+    public class CustomDrawableView extends View {
+    private ShapeDrawable mDrawable;
+
+    public CustomDrawableView(Context context) {
+    super(context);
+
+    int x = 10;
+    int y = 10;
+    int width = 300;
+    int height = 50;
+
+    mDrawable = new ShapeDrawable(new OvalShape());
+    mDrawable.getPaint().setColor(0xff74AC23);
+    mDrawable.setBounds(x, y, x + width, y + height);
+    }
+
+    protected void onDraw(Canvas canvas) {
+    mDrawable.draw(canvas);
+    }
+    }
+	
+}
+    
+	/*
+	private void init() {
+		   mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		   mTextPaint.setColor(0xff74AC23);
+		   mPiePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		   mPiePaint.setStyle(Paint.Style.FILL);
+		   
+
+		   mShadowPaint = new Paint(0);
+		   mShadowPaint.setColor(0xff101010);
+		   mShadowPaint.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
+	}
+
+	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	   // Try for a width based on our minimum
+	   int minw = getPaddingLeft() + getPaddingRight() + getSuggestedMinimumWidth();
+	   int w = resolveSizeAndState(minw, widthMeasureSpec, 1);
+
+	   // Whatever the width ends up being, ask for a height that would let the pie
+	   // get as big as it can
+	   int minh = MeasureSpec.getSize(w) - (int)mTextWidth + getPaddingBottom() + getPaddingTop();
+	   int h = resolveSizeAndState(MeasureSpec.getSize(w) - (int)mTextWidth, heightMeasureSpec, 0);
+
+	   setMeasuredDimension(w, h);
+	}
+	
+	protected void onDraw(Canvas canvas) {
+		   super.onDraw(canvas);
+
+		   // Draw the shadow
+		   canvas.drawOval(
+		           mShadowBounds,
+		           mShadowPaint
+		   );
+
+		   // Draw the label text
+		   canvas.drawText(mData.get(mCurrentItem).mLabel, mTextX, mTextY, mTextPaint);
+
+		   // Draw the pie slices
+		   for (int i = 0; i < mData.size(); ++i) {
+		       Item it = mData.get(i);
+		       mPiePaint.setShader(it.mShader);
+		       canvas.drawArc(mBounds,
+		               360 - it.mEndAngle,
+		               it.mEndAngle - it.mStartAngle,
+		               true, mPiePaint);
+		   }
+
+		   // Draw the pointer
+		   canvas.drawLine(mTextX, mPointerY, mPointerX, mPointerY, mTextPaint);
+		   canvas.drawCircle(mPointerX, mPointerY, mPointerSize, mTextPaint);
+	}
+	
+		*/

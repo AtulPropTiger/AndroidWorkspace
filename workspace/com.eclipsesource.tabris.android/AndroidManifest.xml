@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.eclipsesource.tabris.android"
+    android:versionCode="23"
+    android:versionName="1.2.1" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="19" />
+
+</manifest>

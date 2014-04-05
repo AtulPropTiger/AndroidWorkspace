@@ -1,0 +1,2 @@
+alarms will be in the format of: alarm1 time8:0 length20 days[M:Y,T:Y,W:Y,H:Y,F:Y,S:Y,U:Y]
+ 

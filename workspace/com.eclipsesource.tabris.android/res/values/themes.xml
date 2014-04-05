@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Holo.Tabris" parent="@style/Theme.Sherlock" tools:ignore="NewApi">
+        <item name="android:colorForeground">@color/bright_foreground_holo_dark</item>
+        <item name="android:colorForegroundInverse">@color/bright_foreground_inverse_holo_dark</item>
+        <item name="android:colorBackground">@color/background_holo_dark</item>
+        <item name="android:colorBackgroundCacheHint">@drawable/background_cache_hint_selector_holo_dark</item>
+        <item name="android:disabledAlpha">0.5</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+
+        <!-- Window -->
+        <item name="android:windowBackground">@drawable/screen_background_dark</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowTitleSize">0dp</item>
+
+        <!-- Text -->
+        <item name="android:textAppearance">@style/TextAppearance.Holo</item>
+        <item name="android:textAppearanceInverse">@style/TextAppearance.Holo.Inverse</item>
+        <item name="android:textColorPrimary">@color/primary_text_holo_dark</item>
+        <item name="android:textColorSecondary">@color/secondary_text_holo_dark</item>
+        <item name="android:textColorTertiary">@color/tertiary_text_holo_dark</item>
+        <item name="android:textColorPrimaryInverse">@color/primary_text_holo_light</item>
+        <item name="android:textColorSecondaryInverse">@color/secondary_text_holo_light</item>
+        <item name="android:textColorTertiaryInverse">@color/tertiary_text_holo_light</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/primary_text_disable_only_holo_dark</item>
+        <item name="android:textColorPrimaryInverseDisableOnly">@color/primary_text_disable_only_holo_light</item>
+        <item name="android:textColorPrimaryNoDisable">@color/primary_text_nodisable_holo_dark</item>
+        <item name="android:textColorSecondaryNoDisable">@color/secondary_text_nodisable_holo_dark</item>
+        <item name="android:textColorPrimaryInverseNoDisable">@color/primary_text_nodisable_holo_light</item>
+        <item name="android:textColorSecondaryInverseNoDisable">@color/secondary_text_nodisable_holo_light</item>
+        <item name="android:textColorHint">@color/hint_foreground_holo_dark</item>
+        <item name="android:textColorHintInverse">@color/hint_foreground_holo_light</item>
+        <item name="android:textColorHighlight">@color/highlighted_text_holo_dark</item>
+        <item name="android:textColorLink">@color/holo_blue_light</item>
+        <item name="android:textAppearanceButton">@style/TextAppearance.Holo.Widget.Button</item>
+        <item name="android:textAppearanceListItemSmall">@style/TextAppearance.Holo.Large</item>
+        <item name="android:candidatesTextStyleSpans">@string/candidates_style</item>
+        <item name="android:textCheckMark">@drawable/indicator_check_mark_dark</item>
+        <item name="android:textCheckMarkInverse">@drawable/indicator_check_mark_light</item>
+        <item name="dividerVertical">?android:attr/listDivider</item>
+        <item name="dividerHorizontal">?android:attr/listDivider</item>
+        <item name="android:listDivider">@drawable/list_divider_holo_dark</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Holo.Large</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Holo.Medium</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Holo.Small</item>
+        <item name="android:textAppearanceLargeInverse">@style/TextAppearance.Holo.Large.Inverse</item>
+        <item name="android:textAppearanceMediumInverse">@style/TextAppearance.Holo.Medium.Inverse</item>
+        <item name="android:textAppearanceSmallInverse">@style/TextAppearance.Holo.Small.Inverse</item>
+        <item name="android:textAppearanceSearchResultTitle">@style/TextAppearance.Holo.SearchResult.Title</item>
+        <item name="android:textAppearanceSearchResultSubtitle">@style/TextAppearance.Holo.SearchResult.Subtitle</item>
+
+        <!-- Widget Styles -->
+
+
+        <!-- EditText -->
+        <item name="android:editTextStyle">@style/Widget.Holo.EditText</item>
+        <item name="editTextColor">?android:attr/textColorPrimary</item>
+        <item name="editTextBackground">@drawable/edit_text_holo_dark</item>
+
+        <!-- TabWidget -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.Holo.TabIndicator</item>
+
+        <!-- Buttons -->
+        <item name="android:buttonStyle">@style/Widget.Holo.Button</item>
+        <item name="android:buttonStyleSmall">@style/Widget.Holo.Button.Small</item>
+        <item name="android:buttonStyleInset">@style/Widget.Holo.Button.Inset</item>
+        <item name="android:buttonStyleToggle">@style/Widget.Holo.Button.Toggle</item>
+        <item name="android:checkboxStyle">@style/Widget.Holo.CompoundButton.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/Widget.Holo.CompoundButton.RadioButton</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_holo_dark</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/btn_check_holo_dark</item>
+
+        <!-- TextView -->
+        <item name="android:textViewStyle">@style/Widget.Holo.TextView</item>
+
+        <!-- Spinner -->
+        <item name="android:spinnerStyle">@style/Widget.Holo.Spinner.DropDown</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Widget.Holo.DropDownItem.Spinner</item>
+        <item name="android:spinnerItemStyle">@style/Widget.Holo.TextView.SpinnerItem</item>
+
+        <!-- Dialog attributes -->
+        <item name="android:alertDialogStyle">@style/AlertDialog.Holo</item>
+        <item name="alertDialogTheme">@style/Theme.Holo.Tabris.Dialog.Alert</item>
+        <item name="alertDialogIcon">@drawable/ic_dialog_alert_holo_dark</item>
+
+        <!-- Toolbar -->
+        <item name="toolbarBackground">@drawable/toolbar_background_dark</item>
+        <item name="toolbarSeparatorColor">@color/toolbar_separator_solid_dark</item>
+        <item name="toolbarSeparatorGradiant">@drawable/action_bar_divider_dark</item>
+
+        <!-- Group -->
+        <item name="groupTitleTextColor">@color/group_title_text_color_dark</item>
+        <item name="groupSeparatorColor">@color/group_separator_color_dark</item>
+
+        <!-- Shell -->
+        <item name="windowAnimationModalStyle">@style/Animation.Holo.Dialog</item>
+        <item name="windowAnimationModalBackgroundStyle">@style/Animation.Holo.Dialog.Background</item>
+
+        <!-- ProgressBar -->
+        <item name="android:progressBarStyleHorizontal">@style/Widget.Holo.ProgressBar.Horizontal</item>
+
+        <!-- List -->
+        <item name="android:absListViewStyle">@style/Widget.Holo.AbsListView</item>
+        <item name="android:listViewStyle">@style/Widget.Holo.ListView</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_holo_dark</item>
+
+        <!-- Scale -->
+        <item name="android:seekBarStyle">@style/Widget.Holo.SeekBar</item>
+    </style>
+
+    <style name="Theme.Holo.Light.Tabris" parent="@style/Theme.Sherlock.Light" tools:ignore="NewApi">
+
+        <!-- Window -->
+        <item name="android:windowBackground">@drawable/screen_background_light</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowTitleSize">0dp</item>
+
+        <!-- Text -->
+        <item name="android:colorForeground">@color/bright_foreground_holo_light</item>
+        <item name="android:colorForegroundInverse">@color/bright_foreground_inverse_holo_light</item>
+        <item name="android:colorBackground">@color/background_holo_light</item>
+        <item name="android:colorBackgroundCacheHint">@drawable/background_cache_hint_selector_holo_light</item>
+        <item name="android:disabledAlpha">0.5</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+
+        <!-- Text styles -->
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Light</item>
+        <item name="android:textAppearanceInverse">@style/TextAppearance.Holo.Light.Inverse</item>
+        <item name="android:textColorPrimary">@color/primary_text_holo_light</item>
+        <item name="android:textColorSecondary">@color/secondary_text_holo_light</item>
+        <item name="android:textColorTertiary">@color/tertiary_text_holo_light</item>
+        <item name="android:textColorPrimaryInverse">@color/primary_text_holo_dark</item>
+        <item name="android:textColorSecondaryInverse">@color/secondary_text_holo_dark</item>
+        <item name="android:textColorTertiaryInverse">@color/tertiary_text_holo_dark</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/primary_text_disable_only_holo_light</item>
+        <item name="android:textColorPrimaryInverseDisableOnly">@color/primary_text_disable_only_holo_dark</item>
+        <item name="android:textColorPrimaryNoDisable">@color/primary_text_nodisable_holo_light</item>
+        <item name="android:textColorSecondaryNoDisable">@color/secondary_text_nodisable_holo_light</item>
+        <item name="android:textColorPrimaryInverseNoDisable">@color/primary_text_nodisable_holo_dark</item>
+        <item name="android:textColorSecondaryInverseNoDisable">@color/secondary_text_nodisable_holo_dark</item>
+        <item name="android:textColorHint">@color/hint_foreground_holo_light</item>
+        <item name="android:textColorHintInverse">@color/hint_foreground_holo_dark</item>
+        <item name="android:textColorHighlight">@color/highlighted_text_holo_light</item>
+        <item name="android:textColorLink">@color/holo_blue_light</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Holo.Light.Large</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Holo.Light.Medium</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Holo.Light.Small</item>
+        <item name="android:textAppearanceLargeInverse">@style/TextAppearance.Holo.Light.Large.Inverse</item>
+        <item name="android:textAppearanceMediumInverse">@style/TextAppearance.Holo.Light.Medium.Inverse</item>
+        <item name="android:textAppearanceSmallInverse">@style/TextAppearance.Holo.Light.Small.Inverse</item>
+        <item name="android:textAppearanceSearchResultTitle">@style/TextAppearance.Holo.Light.SearchResult.Title</item>
+        <item name="android:textAppearanceSearchResultSubtitle">@style/TextAppearance.Holo.Light.SearchResult.Subtitle</item>
+        <item name="android:textAppearanceButton">@style/TextAppearance.Holo.Light.Widget.Button</item>
+        <item name="android:candidatesTextStyleSpans">@string/candidates_style</item>
+        <item name="android:textCheckMark">@drawable/indicator_check_mark_light</item>
+        <item name="android:textCheckMarkInverse">@drawable/indicator_check_mark_dark</item>
+        <item name="android:listDivider">@drawable/list_divider_holo_light</item>
+
+        <!-- Widget Styles -->
+
+
+        <!-- Edit Text -->
+        <item name="android:editTextStyle">@style/Widget.Holo.Light.EditText</item>
+        <item name="editTextColor">?android:attr/textColorPrimary</item>
+        <item name="editTextBackground">@drawable/edit_text_holo_light</item>
+
+        <!-- TabWidget -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.Holo.Light.TabIndicator</item>
+
+        <!-- Buttons -->
+        <item name="android:buttonStyle">@style/Widget.Holo.Light.Button</item>
+        <item name="android:buttonStyleSmall">@style/Widget.Holo.Light.Button.Small</item>
+        <item name="android:buttonStyleInset">@style/Widget.Holo.Light.Button.Inset</item>
+        <item name="android:buttonStyleToggle">@style/Widget.Holo.Light.Button.Toggle</item>
+        <item name="android:checkboxStyle">@style/Widget.Holo.Light.CompoundButton.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/Widget.Holo.Light.CompoundButton.RadioButton</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_holo_light</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/btn_check_holo_light</item>
+
+        <!-- TextView -->
+        <item name="android:textViewStyle">@style/Widget.Holo.Light.TextView</item>
+
+        <!-- Spinner -->
+        <item name="android:spinnerStyle">@style/Widget.Holo.Light.Spinner.DropDown</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Widget.Holo.Light.DropDownItem.Spinner</item>
+        <item name="android:spinnerItemStyle">@style/Widget.Holo.TextView.SpinnerItem</item>
+
+        <!-- Dialog -->
+        <item name="android:alertDialogStyle">@style/AlertDialog.Holo.Light</item>
+        <item name="alertDialogTheme">@style/Theme.Holo.Light.Tabris.Dialog.Alert</item>
+        <item name="alertDialogIcon">@drawable/ic_dialog_alert_holo_light</item>
+
+        <!-- Toolbar -->
+        <item name="toolbarBackground">@drawable/toolbar_background_light</item>
+        <item name="toolbarSeparatorColor">@color/toolbar_separator_solid_light</item>
+        <item name="toolbarSeparatorGradiant">@drawable/action_bar_divider_light</item>
+
+        <!-- Group -->
+        <item name="groupTitleTextColor">@color/group_title_text_color_light</item>
+        <item name="groupSeparatorColor">@color/group_separator_color_light</item>
+
+        <!-- Shell -->
+        <item name="windowAnimationModalStyle">@style/Animation.Holo.Dialog</item>
+        <item name="windowAnimationModalBackgroundStyle">@style/Animation.Holo.Dialog.Background</item>
+
+        <!-- ProgressBar -->
+        <item name="android:progressBarStyleHorizontal">@style/Widget.Holo.Light.ProgressBar.Horizontal</item>
+
+        <!-- List -->
+        <item name="android:absListViewStyle">@style/Widget.Holo.Light.AbsListView</item>
+        <item name="android:listViewStyle">@style/Widget.Holo.Light.ListView</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_holo_light</item>
+
+        <!-- Scale -->
+        <item name="android:seekBarStyle">@style/Widget.Holo.Light.SeekBar</item>
+    </style>
+
+    <style name="Theme.Holo.Light.Tabris.DarkActionBar" parent="Theme.Sherlock.Light.DarkActionBar" tools:ignore="NewApi">
+
+        <!-- Window -->
+        <item name="android:windowBackground">@drawable/screen_background_light</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowTitleSize">0dp</item>
+
+        <!-- Text -->
+        <item name="android:colorForeground">@color/bright_foreground_holo_light</item>
+        <item name="android:colorForegroundInverse">@color/bright_foreground_inverse_holo_light</item>
+        <item name="android:colorBackground">@color/background_holo_light</item>
+        <item name="android:colorBackgroundCacheHint">@drawable/background_cache_hint_selector_holo_light</item>
+        <item name="android:disabledAlpha">0.5</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+
+        <!-- Text styles -->
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Light</item>
+        <item name="android:textAppearanceInverse">@style/TextAppearance.Holo.Light.Inverse</item>
+        <item name="android:textColorPrimary">@color/primary_text_holo_light</item>
+        <item name="android:textColorSecondary">@color/secondary_text_holo_light</item>
+        <item name="android:textColorTertiary">@color/tertiary_text_holo_light</item>
+        <item name="android:textColorPrimaryInverse">@color/primary_text_holo_dark</item>
+        <item name="android:textColorSecondaryInverse">@color/secondary_text_holo_dark</item>
+        <item name="android:textColorTertiaryInverse">@color/tertiary_text_holo_dark</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/primary_text_disable_only_holo_light</item>
+        <item name="android:textColorPrimaryInverseDisableOnly">@color/primary_text_disable_only_holo_dark</item>
+        <item name="android:textColorPrimaryNoDisable">@color/primary_text_nodisable_holo_light</item>
+        <item name="android:textColorSecondaryNoDisable">@color/secondary_text_nodisable_holo_light</item>
+        <item name="android:textColorPrimaryInverseNoDisable">@color/primary_text_nodisable_holo_dark</item>
+        <item name="android:textColorSecondaryInverseNoDisable">@color/secondary_text_nodisable_holo_dark</item>
+        <item name="android:textColorHint">@color/hint_foreground_holo_light</item>
+        <item name="android:textColorHintInverse">@color/hint_foreground_holo_dark</item>
+        <item name="android:textColorHighlight">@color/highlighted_text_holo_light</item>
+        <item name="android:textColorLink">@color/holo_blue_light</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Holo.Light.Large</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Holo.Light.Medium</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Holo.Light.Small</item>
+        <item name="android:textAppearanceLargeInverse">@style/TextAppearance.Holo.Light.Large.Inverse</item>
+        <item name="android:textAppearanceMediumInverse">@style/TextAppearance.Holo.Light.Medium.Inverse</item>
+        <item name="android:textAppearanceSmallInverse">@style/TextAppearance.Holo.Light.Small.Inverse</item>
+        <item name="android:textAppearanceSearchResultTitle">@style/TextAppearance.Holo.Light.SearchResult.Title</item>
+        <item name="android:textAppearanceSearchResultSubtitle">@style/TextAppearance.Holo.Light.SearchResult.Subtitle</item>
+        <item name="android:textAppearanceButton">@style/TextAppearance.Holo.Light.Widget.Button</item>
+        <item name="android:candidatesTextStyleSpans">@string/candidates_style</item>
+        <item name="android:textCheckMark">@drawable/indicator_check_mark_light</item>
+        <item name="android:textCheckMarkInverse">@drawable/indicator_check_mark_dark</item>
+        <item name="android:listDivider">@drawable/list_divider_holo_light</item>
+
+        <!-- Widget Styles -->
+
+
+        <!-- Edit Text -->
+        <item name="android:editTextStyle">@style/Widget.Holo.Light.EditText</item>
+        <item name="editTextColor">?android:attr/textColorPrimary</item>
+        <item name="editTextBackground">@drawable/edit_text_holo_light</item>
+
+        <!-- TabIndicator -->
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.Holo.Light.TabIndicator</item>
+
+        <!-- Buttons -->
+        <item name="android:buttonStyle">@style/Widget.Holo.Light.Button</item>
+        <item name="android:buttonStyleSmall">@style/Widget.Holo.Light.Button.Small</item>
+        <item name="android:buttonStyleInset">@style/Widget.Holo.Light.Button.Inset</item>
+        <item name="android:buttonStyleToggle">@style/Widget.Holo.Light.Button.Toggle</item>
+        <item name="android:checkboxStyle">@style/Widget.Holo.Light.CompoundButton.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/Widget.Holo.Light.CompoundButton.RadioButton</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_holo_light</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/btn_check_holo_light</item>
+
+        <!-- TextView -->
+        <item name="android:textViewStyle">@style/Widget.Holo.Light.TextView</item>
+
+        <!-- Spinner -->
+        <item name="android:spinnerStyle">@style/Widget.Holo.Light.Spinner.DropDown</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Widget.Holo.Light.DropDownItem.Spinner</item>
+        <item name="android:spinnerItemStyle">@style/Widget.Holo.TextView.SpinnerItem</item>
+
+        <!-- Dialog -->
+        <item name="android:alertDialogStyle">@style/AlertDialog.Holo.Light</item>
+        <item name="alertDialogTheme">@style/Theme.Holo.Light.Tabris.Dialog.Alert</item>
+        <item name="alertDialogIcon">@drawable/ic_dialog_alert_holo_light</item>
+
+        <!-- Toolbar -->
+        <item name="toolbarBackground">@drawable/toolbar_background_light</item>
+        <item name="toolbarSeparatorColor">@color/toolbar_separator_solid_light</item>
+        <item name="toolbarSeparatorGradiant">@drawable/action_bar_divider_light</item>
+
+        <!-- Group -->
+        <item name="groupTitleTextColor">@color/group_title_text_color_light</item>
+        <item name="groupSeparatorColor">@color/group_separator_color_light</item>
+
+        <!-- Shell -->
+        <item name="windowAnimationModalStyle">@style/Animation.Holo.Dialog</item>
+        <item name="windowAnimationModalBackgroundStyle">@style/Animation.Holo.Dialog.Background</item>
+
+        <!-- ProgressBar -->
+        <item name="android:progressBarStyleHorizontal">@style/Widget.Holo.Light.ProgressBar.Horizontal</item>
+
+        <!-- List -->
+        <item name="android:absListViewStyle">@style/Widget.Holo.Light.AbsListView</item>
+        <item name="android:listViewStyle">@style/Widget.Holo.Light.ListView</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_holo_light</item>
+
+        <!-- Scale -->
+        <item name="android:seekBarStyle">@style/Widget.Holo.Light.SeekBar</item>
+
+        <!-- ActionBar -->
+        <item name="android:spinnerDropDownItemStyle">@style/DropDownItem</item>
+    </style>
+
+    <style name="Theme.Holo.Tabris.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle.Holo</item>
+        <item name="android:windowBackground">@drawable/dialog_full_holo_dark</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Holo.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:textAppearance">@style/TextAppearance.Holo</item>
+        <item name="android:textAppearanceInverse">@style/TextAppearance.Holo.Inverse</item>
+    </style>
+
+    <style name="Theme.Holo.Tabris.Dialog.Alert">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle.Holo</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Theme.Holo.Light.Tabris.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle.Holo.Light</item>
+        <item name="android:windowBackground">@drawable/dialog_full_holo_light</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Holo.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Light</item>
+        <item name="android:textAppearanceInverse">@style/TextAppearance.Holo.Light.Inverse</item>
+    </style>
+
+    <style name="Theme.Holo.Light.Tabris.Dialog.Alert">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle.Holo.Light</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+</resources>

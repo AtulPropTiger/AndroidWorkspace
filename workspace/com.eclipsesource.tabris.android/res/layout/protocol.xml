@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<com.eclipsesource.tabris.android.internal.toolkit.view.Display xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:tag="w1" >
+
+</com.eclipsesource.tabris.android.internal.toolkit.view.Display>

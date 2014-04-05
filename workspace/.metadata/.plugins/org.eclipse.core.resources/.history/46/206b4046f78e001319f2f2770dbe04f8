@@ -1,0 +1,187 @@
+package com.smart.taskbar;
+
+
+import android.app.Service;
+import android.app.WallpaperManager;
+import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.os.IBinder;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class HUD extends Service implements OnTouchListener {
+	
+	long down_time_start;
+	long down_time_end;
+	String name = "";
+	int count = 0;
+	WindowManager.LayoutParams correct_peram = null;
+	
+    Button mButton;
+    @Override
+    public IBinder
+    onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        count = 0;//dont think i need this
+        //mView = new HUDView(this);
+        mButton = new Button(this);
+        Toast.makeText(this,"HUD starting up!", Toast.LENGTH_SHORT).show();
+        mButton.setText("Overlay button");
+        mButton.setOnTouchListener(this);
+        
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        
+		        WindowManager.LayoutParams.WRAP_CONTENT,
+		        WindowManager.LayoutParams.WRAP_CONTENT,
+		        WindowManager.LayoutParams.TYPE_PHONE, // chaned to phone 2/4/14 , from system overlay
+		        //WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+		        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+		        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH /*| 
+		        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE*/ 
+		        | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH ,
+		        PixelFormat.TRANSLUCENT);
+        		//above is the test
+
+        
+        
+        //params.gravity = Gravity.RIGHT | Gravity.TOP;
+        params.gravity = Gravity.FILL; //trying this out prob need unhide above and delete
+        //this will make the whole window give correct cords for the touch event, it jsut
+        //doesnt let anything else happen, cant open apps etc.
+        params.setTitle("Load Average");
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        wm.addView(mButton, params);
+        correct_peram = params; //save this for use in on touch
+        
+        
+      
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mButton != null)
+        {
+            ((WindowManager) getSystemService(WINDOW_SERVICE)).removeView(mButton);
+            mButton = null;
+        }
+    }
+
+	
+	public boolean onTouch(View v, MotionEvent event) {
+		
+		count+=1;
+		
+		//Toast.makeText(this, " working? "
+        //		, Toast.LENGTH_SHORT).show();
+
+		int action_type_int = event.getActionMasked(); //int constant for motion type, 1 is motion down etc.
+		String action_type = ""; //motion down, motion up etc. defined by int constants in switch below
+
+		//below will always say touch outside if i don't press the actual overlay button,
+		//i need to make it cover the whole screen and fully transperent.
+		if (action_type_int == 0){action_type = "Touch Down";}
+		else if((action_type_int == 1)){action_type = "Touch Up";}
+		else if((action_type_int == 2)){action_type = "Touch Move";}
+		else if((action_type_int == 4)){action_type = "Touch Outside";}
+		else if((action_type_int == 8)){action_type = "Touch Scroll";}
+		else{action_type = "Touch Unknown";}
+		
+		if (action_type == "Touch Down"){
+			down_time_start = //event.getDownTime();
+					SystemClock.elapsedRealtime();
+		}
+		if (action_type == "Touch Up"){
+			down_time_end = SystemClock.elapsedRealtime();
+		}
+	
+		int pointer_index = event.getActionIndex(); //location where event above occured
+		int pointer_id = event.getPointerId(pointer_index); //pointer id of the pointer_index
+		float x_cord = event.getX(pointer_index); 
+		float y_cord = event.getY(pointer_index);
+		//float x_cord = event.getRawX(); 
+		//float y_cord = event.getRawY();
+		//float x_cord = event.getAxisValue (event.AXIS_X);
+		//float y_cord = event.getAxisValue (event.AXIS_Y);
+		
+        //Toast.makeText(this,"Overlay button event", Toast.LENGTH_SHORT).show();
+		if (action_type == "Touch Down"){
+			Toast.makeText(this,  action_type + " at{" + x_cord + "," + y_cord + "}" 
+        		, Toast.LENGTH_SHORT).show();
+		}
+		else if (action_type == "Touch Up"){
+			if (down_time_end - down_time_start >= 4000){System.exit(0);}
+			/*
+			String press_time = "ShortPress";
+			
+			if (down_time_end - down_time_start >= 1000){press_time = "LongPress";} //pressed screen for a sec or more, = longpress
+			Toast.makeText(this,down_time_end - down_time_start + press_time + action_type + " at{" + x_cord + "," + y_cord + "}" 
+        		, Toast.LENGTH_SHORT).show();
+			*///
+		}
+		else if (action_type == "Touch Outside"){
+			Toast.makeText(this,action_type + " at{" + x_cord + "," + y_cord + "}" + " {" + event.getX() + 
+					"," + event.getY() + "}"
+	        		, Toast.LENGTH_SHORT).show();
+		}
+        Log.i("TOUCHHHHHHHHHHHH", " you touched me up in this");
+        
+    
+      
+        
+        //WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        if (count%2 == 1){
+        	correct_peram.gravity = Gravity.NO_GRAVITY;
+            correct_peram.gravity = Gravity.RIGHT | Gravity.TOP;
+
+            //wm.removeView(mButton);
+            //wm.addView(mButton, correct_peram);
+            //((WindowManager) getSystemService(WINDOW_SERVICE)).removeView(mButton);
+            //((WindowManager) getSystemService(WINDOW_SERVICE)).addView(mButton, correct_peram);
+            //wm.updateViewLayout(mButton, correct_peram);
+            WallpaperManager wp = WallpaperManager.getInstance(v.getContext());
+            int x = (int) x_cord;
+            int y = (int) y_cord;
+            //wp.sendWallpaperCommand(v.getWindowToken(), "android.wallpaper.tap", x, y, 0, null);
+        	//this.onTouch(v, event);
+            mButton.setVisibility(View.GONE);
+           
+        }
+        else{
+        	correct_peram.gravity = Gravity.NO_GRAVITY;
+            correct_peram.gravity = Gravity.FILL;
+            ((WindowManager) getSystemService(WINDOW_SERVICE)).removeView(mButton);
+            ((WindowManager) getSystemService(WINDOW_SERVICE)).addView(mButton, correct_peram);
+            //wm.removeView(mButton);
+            //wm.addView(mButton, correct_peram);
+            //wm.updateViewLayout(mButton, correct_peram);
+        }
+       
+        
+        //focusSearch(int direction)
+        
+        
+	
+		return true;
+		
+		
+	}
+    
+    
+}
+
+
+
+

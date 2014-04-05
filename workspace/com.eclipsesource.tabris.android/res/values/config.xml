@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- The duration (in milliseconds) of the activity open/close and fragment open/close animations. -->
+    <integer name="config_activityShortDur">150</integer>
+    <integer name="config_activityDefaultDur">220</integer>
+
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true"
+        android:drawable="@drawable/btn_check_buttonless_on" />
+
+    <item android:state_checked="false"
+        android:drawable="@drawable/btn_check_buttonless_off" />
+
+    <item
+        android:drawable="@drawable/btn_check_buttonless_off" />
+
+</selector>

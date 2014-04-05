@@ -1,0 +1,80 @@
+package filepack;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+
+import org.omg.CORBA.Environment;
+
+public class CopyFile {
+   public static void main(String args[]) throws IOException
+   {
+      FileInputStream in = null;
+      FileOutputStream out = null;
+      //File file = new File(".");
+      //String s = "C:" + " \"ROM\" ";
+      //String s = "C:\\Users\\rtack_000\\workspace\\FileTesting\\src\\filepack";
+      // /C:/Users/rtack_000/workspace/FileTesting/bin/input.txt
+      //getAbsolutePath();
+      //File file = new File(s);
+      URL url = CopyFile.class.getClassLoader().getResource("filepack"); 
+      //System.out.println(url.getPath());  
+      File file = new File(url.getPath());
+      
+      for(String fileNames : file.list()) {
+    	  //System.out.println(fileNames);
+    	  if (fileNames.endsWith(".txt")){
+    		  System.out.println("its a java filename and it = " + fileNames);
+	      
+		      try {
+		         in = new FileInputStream(url.getPath() + "\\" + fileNames);
+		         //String ab = "C:\\Users\\rtack_000\\Documents\\t-25 ab interval moves by second breakdown.txt";
+		    	 //or you can use ./filename.txt if it is in binary of the package
+		    	 //You can use YourClassName.class.getResourceAsStream("Filename.txt"), but your text file
+		    	 //has to be in the same directory/package as your YourClassName file.
+		    	 //in = (FileInputStream) CopyFile.class.getResourceAsStream(fileNames);
+		    	 //System.out.println(in);
+		    	  //System.out.println(System.getProperty("user.dir"));
+		    	  //System.out.println(System.getProperty("java.class.path"));
+		    	  
+		         //in = new FileInputStream("./input.txt");
+		         //in = new FileInputStream("C:\Users\rtack_000\workspace\FileTesting\src\filepack\input.txt");
+		         out = new FileOutputStream("out_test4.txt");
+		         
+		         /*
+		         Reader rd = new InputStreamReader(in, "USASCII");  // or whatever encoding you use
+		         while (true) {
+		             String command = readLine(rd );
+		             if (command .equals("RAW")) {
+		                 int length = Integer.parseInt(readLine(rd ));
+		                 byte[] data = readData(in , length);
+		                 
+		             }
+		         }
+		         */
+		         String line = "";
+		         String character = "";
+		         int c;
+		         while ((c = in.read()) != -1) {
+		        	//System.out.println(new String(new byte[]{ (byte)0x63 }, "US-ASCII"));
+		        	//System.out.println(new String(new byte[]{ (byte)c }, "US-ASCII"));
+		        	character = new String(new byte[]{ (byte)c }, "US-ASCII");
+		        	/*if (c == 13){ // new line byte = 13
+		        		System.out.print(line);
+		        		line = "";
+		        	}
+		           */
+		        	line+=character;
+		            out.write(c);
+		         }
+		      }finally {
+		         if (in != null) {
+		            in.close();
+		         }
+		         if (out != null) {
+		            out.close();
+		         }
+		      }
+    	  }  //end of if
+      }//end of for
+   }
+}

@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<resources>
+
+    <!-- Custom styles -->
+    <style name="TreeItem">
+        <item name="android:paddingLeft">@dimen/tree_item_padding_left</item>
+        <item name="android:paddingRight">@dimen/tree_item_padding_left</item>
+    </style>
+
+    <!-- Android specific styles -->
+    <style name="DialogWindowTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.DialogWindowTitle</item>
+    </style>
+    <!-- Text Styles -->
+    <style name="TextAppearance">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHighlight">?android:attr/textColorHighlight</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+        <item name="android:textColorLink">?android:attr/textColorLink</item>
+        <item name="android:textSize">16dip</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.Medium">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="TextAppearance.Large">
+        <item name="android:textSize">22dp</item>
+    </style>
+
+    <style name="TextAppearance.Widget"></style>
+
+    <style name="TextAppearance.Widget.TextView">
+        <item name="android:textColor">?android:attr/textColorPrimaryDisableOnly</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="TextAppearance.Widget.TextView.PopupMenu">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryDisableOnly</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="TextAppearance.Widget.PopupMenu">
+        <item name="android:textColor">@color/primary_text_light</item>
+        <item name="android:textColorHint">@color/hint_foreground_light</item>
+        <item name="android:textColorHighlight">@color/highlighted_text_light</item>
+        <item name="android:textColorLink">@color/link_text_light</item>
+    </style>
+
+    <style name="TextAppearance.Widget.TabIndicator">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Widget.DropDownItem">
+        <item name="android:textColor">@color/primary_text_light_disable_only</item>
+    </style>
+
+    <style name="TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/primary_text_light_disable_only</item>
+    </style>
+
+    <style name="TextAppearance.DialogWindowTitle">
+        <item name="android:textSize">22dp</item>
+    </style>
+
+    <style name="Widget">
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
+    </style>
+
+    <style name="Widget.Button">
+        <item name="android:background">@android:drawable/btn_default</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+    </style>
+
+    <style name="Widget.CompoundButton">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryDisableOnly</item>
+        <item name="android:gravity">center_vertical|left</item>
+    </style>
+
+    <style name="Widget.CompoundButton.CheckBox">
+        <item name="android:background">@drawable/btn_check_label_background</item>
+        <item name="android:button">?android:attr/listChoiceIndicatorMultiple</item>
+    </style>
+
+    <style name="Widget.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/btn_radio_label_background</item>
+        <item name="android:button">?android:attr/listChoiceIndicatorSingle</item>
+    </style>
+
+    <style name="Widget.EditText">
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">?editTextBackground</item>
+        <!-- <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item> -->
+        <!-- <item name="android:textColor">?android:attr/editTextColor</item> -->
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.TabIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="Widget.ActionBar.TabView" parent="Widget">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/minitab_lt</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+    </style>
+
+    <style name="Widget.ActionBar.TabText" parent="Widget">
+        <item name="android:textAppearance">@style/TextAppearance.Widget.TextView.PopupMenu</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="Widget.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="Widget.TextView.ListSeparator">
+        <item name="android:background">@drawable/dark_header_dither</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">8dip</item>
+    </style>
+
+    <style name="Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/TextAppearance.Widget.TextView.SpinnerItem</item>
+    </style>
+
+    <style name="Widget.Spinner">
+        <item name="android:background">@android:drawable/btn_dropdown</item>
+        <item name="android:clickable">true</item>
+        <!-- <item name="android:spinnerMode">dialog</item> -->
+        <item name="android:dropDownSelector">@android:drawable/list_selector_background</item>
+        <item name="android:popupBackground">@android:drawable/spinner_dropdown_background</item>
+        <item name="android:dropDownVerticalOffset">-10dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <!-- <item name="android:popupPromptView">@android:layout/simple_dropdown_hint</item> -->
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Widget.Spinner.DropDown">
+        <!-- <item name="android:spinnerMode">dropdown</item> -->
+    </style>
+
+    <style name="Widget.DropDownItem">
+        <item name="android:textAppearance">@style/TextAppearance.Widget.DropDownItem</item>
+        <item name="android:paddingLeft">@dimen/dropdownitem_text_padding_left</item>
+        <item name="android:paddingRight">@dimen/dropdownitem_text_padding_right</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AlertDialog">
+        <!-- <item name="android:fullDark">@android:drawable/popup_full_dark</item> -->
+        <!-- <item name="android:topDark">@android:drawable/popup_top_dark</item> -->
+        <!-- <item name="android:centerDark">@android:drawable/popup_center_dark</item> -->
+        <!-- <item name="android:bottomDark">@android:drawable/popup_bottom_dark</item> -->
+        <!-- <item name="android:fullBright">@android:drawable/popup_full_bright</item> -->
+        <!-- <item name="android:topBright">@android:drawable/popup_top_bright</item> -->
+        <!-- <item name="android:centerBright">@android:drawable/popup_center_bright</item> -->
+        <!-- <item name="android:bottomBright">@android:drawable/popup_bottom_bright</item> -->
+        <!-- <item name="android:bottomMedium">@android:drawable/popup_bottom_medium</item> -->
+        <!-- <item name="android:centerMedium">@android:drawable/popup_center_medium</item> -->
+        <!-- <item name="android:progressLayout">@android:layout/progress_dialog</item> -->
+        <!-- <item name="android:horizontalProgressLayout">@android:layout/alert_dialog_progress</item> -->
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+        <item name="android:paddingBottom">1dip</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="Animation" />
+
+    <style name="Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+    <style name="Widget.ProgressBar_Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@android:drawable/progress_horizontal</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:indeterminateDuration">3500</item>
+        <item name="android:minHeight">20dip</item>
+        <item name="android:maxHeight">20dip</item>
+    </style>
+
+    <style name="Widget.AbsListView">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadingEdge">vertical</item>
+    </style>
+
+    <style name="Widget.ListView" parent="Widget.AbsListView">
+        <item name="android:listSelector">@android:drawable/list_selector_background</item>
+        <item name="android:cacheColorHint">?android:attr/colorBackgroundCacheHint</item>
+        <item name="android:divider">@drawable/divider_horizontal_dark_opaque</item>
+    </style>
+
+    <!-- Holo Theme -->
+
+    <style name="Widget.Holo" parent="Widget"></style>
+
+    <style name="DialogWindowTitle.Holo">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Holo.DialogWindowTitle</item>
+    </style>
+
+    <style name="TextAppearance.Holo" parent="TextAppearance" />
+
+    <style name="TextAppearance.Holo.Small" parent="TextAppearance.Small" />
+
+    <style name="TextAppearance.Holo.Medium" parent="TextAppearance.Medium" />
+
+    <style name="TextAppearance.Holo.Large" parent="TextAppearance.Large" />
+
+    <style name="TextAppearance.Holo.Inverse" parent="TextAppearance.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Small.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Large.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Medium.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.PopupMenu" parent="TextAppearance.Widget.PopupMenu">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Holo.SearchResult">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="TextAppearance.Holo.SearchResult.Title">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="TextAppearance.Holo.SearchResult.Subtitle">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.PopupMenu.Large">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.PopupMenu.Small">
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget" parent="TextAppearance.Widget" />
+
+    <style name="TextAppearance.Holo.Widget.Button" parent="TextAppearance.Holo.Small.Inverse">
+        <item name="android:textColor">@color/primary_text_light_nodisable</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.DropDownItem">
+        <item name="android:textColor">?android:attr/textColorPrimaryDisableOnly</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.TextView">
+        <item name="android:textColor">?android:attr/textColorPrimaryDisableOnly</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">?android:attr/textColorPrimaryDisableOnly</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.TabIndicator" parent="TextAppearance.Widget.TabIndicator">
+        <item name="android:textColor">@color/tab_indicator_text_holo_dark</item>
+    </style>
+
+    <style name="TextAppearance.Holo.DialogWindowTitle">
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColor">@color/holo_blue_light</item>
+    </style>
+
+    <style name="Widget.Holo.Button" parent="Widget.Button">
+        <item name="android:background">@drawable/btn_default_holo_dark</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">@color/primary_text_holo_dark</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="Widget.Holo.Button.Small">
+        <item name="android:background">@drawable/btn_default_holo_dark</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/primary_text_holo_dark</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="Widget.Holo.Button.Inset">
+        <item name="android:background">@drawable/button_inset</item>
+    </style>
+
+    <style name="Widget.Holo.Button.Toggle">
+        <item name="android:background">@drawable/btn_toggle_holo_dark</item>
+        <item name="android:textOn">@string/capital_on</item>
+        <item name="android:textOff">@string/capital_off</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="Widget.Holo.CompoundButton.CheckBox" parent="Widget.CompoundButton.CheckBox"></style>
+
+    <style name="Widget.Holo.CompoundButton.RadioButton" parent="Widget.CompoundButton.RadioButton"></style>
+
+    <style name="Widget.Holo.EditText" parent="Widget.EditText" />
+
+    <style name="Widget.Holo.TabIndicator" parent="Widget.TabIndicator">
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Widget.TabIndicator</item>
+    </style>
+
+    <style name="Widget.Holo.ActionBar.TabView" parent="Widget.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_holo</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
+
+    <style name="Widget.Holo.ActionBar.TabText" parent="Widget.ActionBar.TabText">
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Medium</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- <item name="android:textAllCaps">true</item> -->
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="Widget.Holo.Tab" parent="Widget.Holo.ActionBar.TabView">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">80dip</item>
+    </style>
+
+    <style name="Widget.Holo.TabText" parent="Widget.Holo.ActionBar.TabText">
+        <item name="android:maxWidth">180dip</item>
+    </style>
+
+    <style name="Widget.Holo.TextView" parent="Widget.TextView"></style>
+
+    <style name="Widget.Holo.TextView.ListSeparator" parent="Widget.TextView.ListSeparator">
+        <item name="android:background">@drawable/list_section_divider_holo_dark</item>
+        <!-- <item name="android:textAllCaps">true</item> -->
+    </style>
+
+    <style name="Widget.Holo.Spinner" parent="Widget.Spinner.DropDown">
+        <item name="android:background">@drawable/spinner_background_holo_dark</item>
+        <item name="android:dropDownSelector">@drawable/list_selector_holo_dark</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_holo_dark</item>
+        <item name="android:dropDownVerticalOffset">0dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <!-- <item name="android:popupPromptView">@android:layout/simple_dropdown_hint</item> -->
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="Widget.Holo.Spinner.DropDown"></style>
+
+    <style name="Widget.Holo.DropDownItem" parent="Widget.DropDownItem">
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Widget.DropDownItem</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
+    <style name="Widget.Holo.DropDownItem.Spinner"></style>
+
+    <style name="Widget.Holo.TextView.SpinnerItem" parent="Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Widget.TextView.SpinnerItem</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
+    <style name="Animation.Holo.Dialog" parent="Animation.Dialog"></style>
+
+    <style name="Animation.Holo.Dialog.Background">
+        <item name="android:windowEnterAnimation">@anim/dialog_background_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_background_fade_out</item>
+    </style>
+
+    <style name="Holo.ButtonBar" parent="ButtonBar">
+        <item name="android:paddingTop">0dip</item>
+        <item name="android:paddingLeft">0dip</item>
+        <item name="android:paddingRight">0dip</item>
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:divider">?attr/dividerVertical</item>
+        <!-- <item name="android:showDividers">middle</item> -->
+        <!-- <item name="android:dividerPadding">12dip</item> -->
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="AlertDialog.Holo" parent="AlertDialog">
+        <item name="android:fullDark">@drawable/dialog_full_holo_dark</item>
+        <item name="android:topDark">@drawable/dialog_top_holo_dark</item>
+        <item name="android:centerDark">@drawable/dialog_middle_holo_dark</item>
+        <item name="android:bottomDark">@drawable/dialog_bottom_holo_dark</item>
+        <item name="android:fullBright">@drawable/dialog_full_holo_dark</item>
+        <item name="android:topBright">@drawable/dialog_top_holo_dark</item>
+        <item name="android:centerBright">@drawable/dialog_middle_holo_dark</item>
+        <item name="android:bottomBright">@drawable/dialog_bottom_holo_dark</item>
+        <item name="android:bottomMedium">@drawable/dialog_bottom_holo_dark</item>
+        <item name="android:centerMedium">@drawable/dialog_middle_holo_dark</item>
+    </style>
+
+    <style name="Widget.Holo.ProgressBar.Horizontal" parent="Widget.ProgressBar_Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_holo_dark</item>
+        <item name="android:indeterminateDrawable">@drawable/progress_indeterminate_horizontal_holo</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
+    <style name="Widget.Holo.AbsListView" parent="Widget.AbsListView"></style>
+
+    <style name="Widget.Holo.ListView" parent="Widget.ListView">
+        <item name="android:divider">?android:attr/listDivider</item>
+        <item name="android:listSelector">@drawable/list_selector_holo_dark</item>
+    </style>
+
+    <style name="Widget.Holo.SeekBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/scrubber_progress_horizontal_holo_dark</item>
+        <item name="android:indeterminateDrawable">@drawable/scrubber_progress_horizontal_holo_dark</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
+        <item name="android:thumb">@drawable/scrubber_control_selector_holo</item>
+        <item name="android:thumbOffset">16dip</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
+
+    <!-- Holo Light -->
+
+    <style name="DialogWindowTitle.Holo.Light">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Light.DialogWindowTitle</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light" parent="TextAppearance.Holo" />
+
+    <style name="TextAppearance.Holo.Light.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Small" parent="TextAppearance.Holo.Small" />
+
+    <style name="TextAppearance.Holo.Light.Medium" parent="TextAppearance.Holo.Medium" />
+
+    <style name="TextAppearance.Holo.Light.Large" parent="TextAppearance.Holo.Large" />
+
+    <style name="TextAppearance.Holo.Light.Large.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Medium.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Small.Inverse">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColorHint">?android:attr/textColorHintInverse</item>
+        <!-- <item name="android:textColorHighlight">?android:attr/textColorHighlightInverse</item> -->
+        <!-- <item name="android:textColorLink">?android:attr/textColorLinkInverse</item> -->
+    </style>
+
+    <style name="TextAppearance.Holo.Light.SearchResult" parent="TextAppearance.Holo.SearchResult">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light.SearchResult.Title">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light.SearchResult.Subtitle">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Widget.TabIndicator" parent="TextAppearance.Widget.TabIndicator">
+        <item name="android:textColor">@color/tab_indicator_text_holo_light</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Widget" parent="TextAppearance.Widget" />
+
+    <style name="TextAppearance.Holo.Light.Widget" parent="TextAppearance.Widget" />
+
+    <style name="TextAppearance.Holo.Light.Widget.Button" />
+
+    <style name="TextAppearance.Holo.Light.Widget.PopupMenu.Large" parent="TextAppearance.Holo.Widget.PopupMenu.Large" />
+
+    <style name="TextAppearance.Holo.Light.Widget.PopupMenu.Small" parent="TextAppearance.Holo.Widget.PopupMenu.Small" />
+
+    <style name="TextAppearance.Holo.Light.Widget.Button" />
+
+    <style name="TextAppearance.Holo.Light.DialogWindowTitle">
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColor">@color/holo_blue_light</item>
+    </style>
+
+    <style name="Widget.Holo.Light.EditText" parent="Widget.Holo.EditText" />
+
+    <style name="Widget.Holo.Light.Button" parent="Widget.Button">
+        <item name="android:background">@drawable/btn_default_holo_light</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+        <item name="android:textColor">@color/primary_text_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="Widget.Holo.Light.Button.Small">
+        <item name="android:background">@drawable/btn_default_holo_light</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/primary_text_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="Widget.Holo.Light.Button.Inset"></style>
+
+    <style name="Widget.Holo.Light.Button.Toggle">
+        <item name="android:background">@drawable/btn_toggle_holo_light</item>
+        <item name="android:textOn">@string/capital_on</item>
+        <item name="android:textOff">@string/capital_off</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:minHeight">48dip</item>
+    </style>
+
+    <style name="Widget.Holo.Light.CompoundButton.CheckBox" parent="Widget.CompoundButton.CheckBox"></style>
+
+    <style name="Widget.Holo.Light.CompoundButton.RadioButton" parent="Widget.CompoundButton.RadioButton"></style>
+
+    <style name="Widget.Holo.Light.TextView" parent="Widget.TextView"></style>
+
+    <style name="Widget.Holo.Light.TextView.ListSeparator" parent="Widget.TextView.ListSeparator">
+        <item name="android:background">@drawable/list_section_divider_holo_light</item>
+    </style>
+
+    <style name="Widget.Holo.Light.Spinner.DropDown"></style>
+
+    <style name="Widget.Holo.Light.Spinner" parent="Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_holo_light</item>
+        <item name="android:dropDownVerticalOffset">0dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <!-- <item name="android:popupPromptView">@android:layout/simple_dropdown_hint</item> -->
+    </style>
+
+    <style name="DropDownItem" parent="@style/Widget.Holo.Light.DropDownItem.Spinner">
+        <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
+    </style>
+
+    <style name="Widget.Holo.Light.DropDownItem" parent="Widget.Holo.DropDownItem"></style>
+
+    <style name="Widget.Holo.Light.DropDownItem.Spinner"></style>
+
+    <style name="AlertDialog.Holo.Light">
+        <item name="android:fullDark">@drawable/dialog_full_holo_light</item>
+        <item name="android:topDark">@drawable/dialog_top_holo_light</item>
+        <item name="android:centerDark">@drawable/dialog_middle_holo_light</item>
+        <item name="android:bottomDark">@drawable/dialog_bottom_holo_light</item>
+        <item name="android:fullBright">@drawable/dialog_full_holo_light</item>
+        <item name="android:topBright">@drawable/dialog_top_holo_light</item>
+        <item name="android:centerBright">@drawable/dialog_middle_holo_light</item>
+        <item name="android:bottomBright">@drawable/dialog_bottom_holo_light</item>
+        <item name="android:bottomMedium">@drawable/dialog_bottom_holo_light</item>
+        <item name="android:centerMedium">@drawable/dialog_middle_holo_light</item>
+    </style>
+
+    <style name="Widget.Holo.Light.ProgressBar.Horizontal" parent="Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_holo_light</item>
+    </style>
+
+    <style name="Widget.Holo.Light.AbsListView" parent="Widget.AbsListView"></style>
+
+    <style name="Widget.Holo.Light.ListView" parent="Widget.Holo.ListView">
+        <item name="android:listSelector">@drawable/list_selector_holo_light</item>
+    </style>
+
+    <style name="Widget.Holo.Light.SeekBar" parent="Widget.Holo.SeekBar">
+        <item name="android:progressDrawable">@drawable/scrubber_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/scrubber_progress_horizontal_holo_light</item>
+    </style>
+
+    <style name="Widget.Holo.Light.TabIndicator" parent="Widget.TabIndicator">
+        <item name="android:textAppearance">@style/TextAppearance.Holo.Light.Widget.TabIndicator</item>
+    </style>
+
+</resources>

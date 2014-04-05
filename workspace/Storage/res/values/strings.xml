@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+   <string name="app_name">Storage</string>
+   <string name="action_settings">Settings</string>
+   <string name="hello_world">Hello world!</string>
+   <string name="save">save to intenal storage</string>
+   <string name="read">load from intenal storag</string>
+
+</resources>

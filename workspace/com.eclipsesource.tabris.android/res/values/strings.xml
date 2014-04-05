@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<resources>
+
+    <string name="app_name">Tabris</string>
+    <string name="candidates_style"><u>candidates</u></string>
+    <string name="capital_on">ON</string>
+    <string name="capital_off">OFF</string>
+    <string name="dialog_error_title">A problem occurred</string>
+    <string name="dialog_error_button_close">Close</string>
+    <string name="dialog_error_button_retry">Retry</string>
+    <string name="dialog_progress_message">Waiting for network data&#8230;</string>
+    <string name="dialog_interrupted_progress_message">The network is currently unresponsive.\n\nThe application might resume if you wait a little while.</string>
+    <string name="dialog_interrupted_progress_button_close">Close App</string>
+    <string name="dialog_interrupted_progress_button_wait">Keep waiting</string>
+    <string name="dialog_restart_button_restart">Restart</string>
+    <string name="dialog_restart_button_retry">Retry</string>
+    <string name="dialog_restart_message">Your session timed out. Please restart the app.</string>
+    <string name="dialog_unexpected_error_occured">"An unexpected error occurred: "</string>
+    <string name="dialog_expiration_title">Tabris Trial</string>
+    <string name="dialog_expiration_message">Your trial version has expired %d day(s) ago.</string>
+    <string name="dialog_expiration_warning_message">You trial version will expire in %d day(s).</string>
+    <string name="progress_indicator_text">Contacting server&#8230;</string>
+    <string name="no_xcallback_target_found">No app found to perform the requested operation.</string>
+
+</resources>

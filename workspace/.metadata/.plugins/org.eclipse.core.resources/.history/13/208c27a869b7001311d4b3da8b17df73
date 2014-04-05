@@ -1,0 +1,16 @@
+package signature;
+
+public interface bicycle {
+	
+	int getModelNumber();
+	
+	int getWheelSize();
+	
+	void setColor();
+	
+	double bikePrice();
+	
+	String bikeBrand();
+	
+
+}

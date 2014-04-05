@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<resources>
+
+    <!-- EditText text foreground color. -->
+    <attr name="editTextColor" format="reference|color" />
+
+    <!-- EditText background drawable. -->
+    <attr name="editTextBackground" format="reference" />
+
+    <!-- Toolbar background drawable. -->
+    <attr name="toolbarBackground" format="reference" />
+
+    <!-- Toolbar separator solid color. -->
+    <attr name="toolbarSeparatorColor" format="reference" />
+
+    <!-- Toolbar separator gradiant. -->
+    <attr name="toolbarSeparatorGradiant" format="reference" />
+
+    <!-- Group title text color. -->
+    <attr name="groupTitleTextColor" format="reference" />
+
+    <!-- Group separator color. -->
+    <attr name="groupSeparatorColor" format="reference" />
+
+    <!-- Drawable to use for generic horizontal dividers. -->
+    <attr name="dividerHorizontal" format="reference" />
+
+    <!-- Style for button bars -->
+    <attr name="buttonBarStyle" format="reference" />
+
+    <!-- Style for buttons within button bars -->
+    <attr name="buttonBarButtonStyle" format="reference" />
+
+    <!-- Theme to use for alert dialogs spawned from this theme. -->
+    <attr name="alertDialogTheme" format="reference" />
+
+    <!-- Icon drawable to use for alerts -->
+    <attr name="alertDialogIcon" format="reference" />
+
+    <!-- Animations for modal windows -->
+    <attr name="windowAnimationModalStyle" format="reference" />
+
+    <!-- Animations for backgrounds of modal windows -->
+    <attr name="windowAnimationModalBackgroundStyle" format="reference" />
+
+</resources>

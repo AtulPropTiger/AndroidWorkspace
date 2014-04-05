@@ -1,0 +1,533 @@
+package com.example.speed;
+
+//import android.R.integer;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.Location;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Message;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Chronometer;
+import android.os.SystemClock;
+import android.view.View.OnClickListener;
+import android.view.MenuItem;
+import 	android.os.Handler;
+import android.content.SharedPreferences.Editor;
+import java.util.Timer;
+import android.app.ActionBar;
+
+@SuppressLint("HandlerLeak")
+public class MainActivity extends Activity implements LocationListener{
+ 
+	
+	View main_view;
+	
+	//super refers to instance of parent class object its
+	//like this keyword except always parent instead of current
+	TextView txt;
+	Context context;
+	View menu_view;
+	private float d_traveled = 0; // initial distance traveled
+	private float[] d_ar = new float[1];
+	boolean start_called = false; // so interval doesnt start til start is pushed
+	
+    private double latitude = 0.0;
+	private double longitude = 0.0;
+	final int counter = 0;
+	private double meter_mult = 0.000621371;//initial conversion from meters to miles
+	Chronometer mChronometer;
+	long stopped_time = -1;//mChronometer.getBase();
+	PopupWindow popupWindow = null; //help popup
+	PopupWindow popupWindow_done = null; //gone the distance done popup
+	public static int interval_int = 5; //convert from string they enter (interval_string) to int
+	long interval_time = 0; // this will change to time when start is called
+	long interval_paused = interval_int*1000; //time until next interval, will change if pause 
+	//called to show there is 4.5 seconds until next interval call etc. then goes back to normal
+	String interval_string = ""; //convert the text they enter in to a string
+	String howfar = ""; // how far to go? convert that text to a string
+	String howfast_min = ""; // how fast ? in minutes text to a string
+	String howfast_sec = ""; // how fast? in sec text to a string
+	long time_total = 600;//total time you want to run the howfar distanc in, initially 600 secs or 10 min
+	double distance_total = 1; //total distance you want to travel
+	double check_pace = 0;
+	double actual_pace =0;//users actual pace to compare to check pace to see if they are on track 
+	
+	long fastmin = 1; //initial minutes equal 1 if user enters nothing, init sec = 0
+	long fastsec = 0; 
+	
+	Setting setting_menu = null;
+	
+	Bundle b = new Bundle();
+	      Handler handler = new Handler(){
+		  @Override
+		  public void handleMessage(Message msg) {
+		//display each item in a single linee
+			  final Button start = (Button) findViewById(R.id.start);
+			  //just changed below to stopped_time + paused, used to be interval_paused
+			  //long temp = stopped_time + interval_paused; // might need to remove after and
+			  long temp = interval_time + interval_paused; // might need to remove after and
+			  Log.i("DemoButtonApp", "HM, temp = " + temp);
+			  Log.i("DemoButtonApp", "HM, systemclock elapsedrealtime()  = " + SystemClock.elapsedRealtime());
+			  if (start.getVisibility() == View.GONE    &&   temp <= SystemClock.elapsedRealtime() + 16){ 
+			      MediaPlayer goodpace = MediaPlayer.create(getApplicationContext() , R.raw.goodpace_audio);
+				  MediaPlayer speedup = MediaPlayer.create(getApplicationContext() , R.raw.speedup_audio);
+				  long x = time_total/interval_int; //ie: you want to run for ten minutes and reminder each 10 seconds, so 60 reminders, x = 60;
+				  check_pace = check_pace + distance_total/x;
+				  Log.i("DemoButtonApp", "HM, sound about to play from handlemessage");
+				  Log.i("DemoButtonApp", "HM, interval_int = " + interval_int);
+				  Log.i("DemoButtonApp", "HM, interval_paused = " + interval_paused);
+				  Log.i("DemoButtonApp", "HM, systemClock.uptimemillis() =  " + SystemClock.uptimeMillis() );
+				  Log.i("DemoButtonApp", "HM, stopped_time = " + stopped_time);
+				  
+				  
+				  
+				  if (check_pace <= d_traveled){ // if user is running faster than the pace they should keep
+					  goodpace.start(); //let user know they are running at a good pace
+				  }
+				  else{
+					  speedup.start();  // let user know they need to speed up
+				  }
+				  //txt.setText(txt.getText()+"Item "+System.getProperty("line.separator"));
+				  b = msg.getData();
+				  interval_paused = interval_int*1000;  // might need to remove this line and change below back to inervalint*10000
+				  handler.sendMessageAtTime(handler.obtainMessage(), SystemClock.uptimeMillis() + (interval_paused /*interval_int*1000*/) );
+				  
+				  //interval_time = SystemClock.uptimeMillis() + (interval_int*1000);
+				  interval_time = SystemClock.elapsedRealtime();
+			  }
+		  }
+	};
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		main_view = getCurrentFocus();
+		
+		txt = (TextView) findViewById(R.id.error); // for handler
+		
+	    ActionBar actionBar = getActionBar();
+	    actionBar.hide();
+
+	    actionBar.show();
+	    popupWindow = new PopupWindow(this, 0); //help popup
+	    popupWindow_done = new PopupWindow(this, 1); //done popup
+	    setting_menu = new Setting();
+	    //actionBar.setSubtitle("subtitle");
+	    //actionBar.setTitle("title"); 
+		
+		TextView speed = (TextView) this.findViewById(R.id.textView1);//current speed string val
+		TextView dt = (TextView) this.findViewById(R.id.d_travel); //distance traveled val string
+		TextView er = (TextView) this.findViewById(R.id.error);
+		mChronometer = (Chronometer) findViewById(R.id.chronometer);
+		//mChronometer.setBase(0); //set the stop watch to start at 0
+		mChronometer.setBase(SystemClock.elapsedRealtime());
+		LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);//this = loc listnr
+		Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (loc != null){
+			latitude = loc.getLatitude();
+			longitude = loc.getLongitude();	
+		}
+		else{
+			er.setText("Could not connect to GPS");
+		}
+		this.onLocationChanged(null);
+		
+		final Button miles_b = (Button) findViewById(R.id.miles_button);
+		
+		final Button meters_b = (Button) findViewById(R.id.meter_button);
+		
+		final Button start = (Button) findViewById(R.id.start);
+		final Button stop = (Button) findViewById(R.id.stop);
+		
+		setupMessageButton();
+	}
+
+	private void setupMessageButton() {
+		final Button miles_b = (Button) findViewById(R.id.miles_button);
+		
+		final Button meters_b = (Button) findViewById(R.id.meter_button);
+		
+		final Button start = (Button) findViewById(R.id.start);
+		final Button stop = (Button) findViewById(R.id.stop);
+		final Button reset = (Button) findViewById(R.id.reset_button);
+		final Button set = (Button) findViewById(R.id.set_button);
+		final EditText interval_text = (EditText) findViewById(R.id.textView3);
+		final TextView unit_mile = (TextView) findViewById(R.id.current_unit);//mile unit
+		final TextView unit_meter = (TextView) findViewById(R.id.current_unit2);//meter unit
+		final EditText minute_input = (EditText) findViewById(R.id.minute_input);
+		final EditText second_input = (EditText) findViewById(R.id.second_input);
+		final EditText d_q_enter = (EditText) findViewById(R.id.distance_question_enter);
+		//final EditText unit_text = (EditText) findViewById(R.id.current_unit);
+		//1. get a reference to the button
+		// (Button) , since button inherets from view, need to cast to get right timing
+		miles_b.setVisibility(View.GONE); // hide the miles button because it is default
+		stop.setVisibility(View.GONE); // hide the stop button because you need to start first 
+		unit_meter.setVisibility(View.GONE);//hide meter unit, initially in miles
+		//2. set a click listener to run my code
+		
+		menu_view = getCurrentFocus(); // set the view for android action bar to be correct when i call it
+		
+		miles_b.setOnClickListener(new View.OnClickListener() {
+			//miles button clicked actions
+			@Override
+			public void onClick(View v) {
+				meters_b.setVisibility(View.VISIBLE);
+				miles_b.setVisibility(View.GONE);
+				Log.i("DemoButtonApp", "you clicked the miles button!");
+				unit_meter.setVisibility(View.GONE);//miles is current hide meter unit
+				unit_mile.setVisibility(View.VISIBLE);
+				//unit_text.setText("miles",TextView.BufferType.EDITABLE);
+			}
+		});
+		
+		meters_b.setOnClickListener(new View.OnClickListener() {
+			//meter button clicked actions
+			@Override
+			public void onClick(View v) {
+				miles_b.setVisibility(View.VISIBLE);
+				meters_b.setVisibility(View.GONE);
+				unit_mile.setVisibility(View.GONE); //meters is current hide miles
+				unit_meter.setVisibility(View.VISIBLE);
+				Log.i("DemoButtonApp", "you clicked the meters button!");
+				//unit_text.setText("km's",TextView.BufferType.EDITABLE);
+			}
+		});
+		
+		
+		start.setOnClickListener(new View.OnClickListener() {
+			//start button clicked
+			@Override
+			public void onClick(View v) {
+				//when you call chronomter.stop() it doesn't actually stop the clock going in the
+				//background just the display, so if the clock started, then was stopped then 
+				//started again we want to start the clock at where it was actually stopped.
+				//so, you take current time ( systemclock.elapsedrealtime() ) and subtract the
+				//time where it was actually stopped, 
+				if (stopped_time != -1){ mChronometer.setBase(
+						SystemClock.elapsedRealtime() - stopped_time + mChronometer.getBase());
+						stopped_time = -1;
+				}
+				else{
+					mChronometer.setBase(SystemClock.elapsedRealtime());//start at 0
+					//interval_paused = interval_int*1000;
+			    }
+				
+				interval_time = mChronometer.getBase(); // prob need to change
+				
+				mChronometer.start();//start button clicked, start timer
+				//hand.sendMessageAtTime ( onLocationChanged(Location location) , SystemClock.uptimeMillis() + (interval_int*1000));
+				stop.setVisibility(View.VISIBLE);
+				start.setVisibility(View.GONE);
+				Log.i("DemoButtonApp", "you clicked the start button! getBase = " + mChronometer.getBase());
+				Log.i("DemoButtonApp", "SystemClock.elapsedRealtime() = " + SystemClock.elapsedRealtime());
+				Log.i("DemoButtonApp", "stopped time = " + stopped_time);
+				if (stopped_time != -1){
+					startInterval(); // starting from a paused interval
+				}
+				else{ startInterval();} //starting a normal interval from start = 0
+			}
+		});
+		
+		stop.setOnClickListener(new View.OnClickListener() {
+			//stop button clicked
+			@Override
+			public void onClick(View v) {
+				stopped_time = SystemClock.elapsedRealtime(); //current time we stopped at
+				interval_paused = interval_time - SystemClock.uptimeMillis();//stopped_time, amount of time the interval 
+				//has used so far like if the interval was 7, and it was 4 seconds in, this would be -4. 
+				Log.i("DemoButtonApp", "interval paused  ==== " + interval_paused);
+				mChronometer.stop(); //stop button clicked, stop timer
+				//mChronometer.setBase(stopped_time);
+				start.setVisibility(View.VISIBLE);
+				stop.setVisibility(View.GONE);
+				Log.i("DemoButtonApp", "you clicked the stop button!stopping at: " + stopped_time);
+				start_called = false; // make the interval stop, so it doenst keep looping whiole paused
+			}
+		});
+
+		
+		reset.setOnClickListener(new View.OnClickListener() {
+			//reset button clicked
+			@Override
+			public void onClick(View v) {
+				start.setVisibility(View.VISIBLE);
+				stop.setVisibility(View.GONE);
+				Log.i("DemoButtonApp", "you clicked the reset button!");
+				d_traveled = 0; // reset distance
+				mChronometer.setBase(SystemClock.elapsedRealtime());//reset stopwatch to 0
+				mChronometer.stop();
+				stopped_time = -1;
+				
+				//probably need to remove line below
+				
+				//interval_paused = interval_int*1000; // reset interval to normal, nothing is paused just reset
+			}
+		});
+		
+		set.setOnClickListener(new View.OnClickListener() {
+			//set interval button clicked
+			@Override
+			public void onClick(View v) {
+
+				//will need to remove these bottom two lines
+	        	//Intent myIntent = new Intent(v.getContext(), Setting.class);
+	        	//startActivityForResult(myIntent, 0);
+	        	
+				//String howfar = ""; // how far to go? convert that text to a string
+				//String howfast_min = ""; // how fast ? in minutes text to a string
+				//String howfast_sec = ""; // how fast? in sec text to a string
+				//long time_total = 0;//total time you want to run the howfar distanc in
+				//interval_variable 
+				interval_string = interval_text.getText().toString();
+
+				if (interval_string.length() >0){
+					//if no interval entered parseInt will cause the program to crash if you 
+					//you try to parse somethign that was not entered, so skip parsing if blank
+					interval_int = Integer.parseInt(interval_string);
+				}
+				interval_paused = interval_int*1000;//update interval
+				
+				howfar = d_q_enter.getText().toString(); //distance you want to go, convert to str
+				if (howfar.length() > 0){
+					//same as if statement above, to account for nothing being entered
+					distance_total = Float.parseFloat(howfar); //now to float, (initally 1 mile )
+					//distance_total = Float.parseFloat(howfar); //now to float, (initally 1 mile )
+					if (miles_b.getVisibility() == View.GONE){ //if currently in miles
+						double miles2meters = 1609.34; // 1 mile = 1609.34
+						distance_total = distance_total*miles2meters;// convert miles total to meters
+					}
+					else{//if not currently in miles it must be in kilometers
+						distance_total = distance_total*1000; // 1 kilometer = 1000 meters, convert km to meters
+					}
+				}
+				
+				howfast_min = minute_input.getText().toString();// # mins you want to go the total dist in
+				if (howfast_min.length() >0){
+					fastmin = Long.parseLong(howfast_min); //conver mins to long
+				}
+				
+				howfast_sec = second_input.getText().toString();// # sec you want to go the total dist in
+				if (howfast_sec.length() >0){
+					fastsec = Long.parseLong(howfast_sec); //conver sec to long
+				}
+				time_total = (fastmin*60) + fastsec; //minutes converted to seconds+seconds
+				
+				Log.i("DemoButtonApp", "you clicked the set interval button!" + interval_int);
+			}
+		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		//getMenuInflater().inflate(R.menu.main, menu);
+		//return true;
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+		
+	    switch (item.getItemId()) {
+	        case R.id.help:
+	    	    popupWindow.show(findViewById(R.id.help), 0, -250);
+	            return true;
+	        case R.id.settings:
+	        	
+	            //takes user to setting screen where they can change interval, distance etc.
+	        	//setContentView(R.layout.settings);
+	        	
+	        	
+	        	Intent myIntent = new Intent(menu_view.getContext(), Setting.class);
+	        	startActivityForResult(myIntent, 0);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}	
+	
+	
+	@Override
+	public void onLocationChanged(Location location) {
+		
+		// getSpeed() originally in meters /second, for km /hour do * 3.6
+		// to go from km/hour to miles/hour do * 0.621371
+		// mph to km/hour do * 1.60934
+		TextView speed = (TextView) this.findViewById(R.id.textView1);//current speed string val
+		TextView dt = (TextView) this.findViewById(R.id.d_travel); //distance traveled val string
+		final Button miles_b = (Button) findViewById(R.id.miles_button);
+		final Button start = (Button) findViewById(R.id.start);
+		final Button stop = (Button) findViewById(R.id.stop);
+		//final Button miles_b = (Button) findViewById(R.id.miles_button);
+		String unit = "";
+		double multiplier = 1.0; // if current unit = meters stay at 1, if miles * 2.24
+		//maybe a better way to do this, probably should put this in the onClick(view v) methods
+		if (miles_b.getVisibility() == View.GONE){
+			//miles visibility is gone because it must be current measurment
+			unit = " miles";
+			multiplier = .621371 ; // convert from km/hour to mph, only for current speed
+			meter_mult = 0.000621371; // meters to miles conversion, used in total distance
+		}
+		else{
+			unit = " km's"; // meters is the current unit
+			multiplier = 1.0;// by default location speed is returned in meters,for currentspeed
+			meter_mult = .001; // meters to kilometers only used in total distance
+		}
+		if (location==null){
+			speed.setText("--0-- haven't moved yet!");
+			
+		}
+		else{
+			double nCurrentSpeed = location.getSpeed();
+			//nCurrentSpeed default is meter/s, *3.6 changes it to kilometers/hour, multiplier
+			//adjusts it even further if we are converting from kmh to mph,if already kmh !change
+			speed.setText((nCurrentSpeed*3.6*multiplier) + unit + "/hour" );
+			double end_latitude = location.getLatitude(); // new lat after movement
+			double end_longitude = location.getLongitude(); // new long after movement
+			//only change the actual distance
+			
+			//idk if second part of if statemnet fixes problem of recording d travled when still
+			
+			if (start.getVisibility() == View.GONE && (nCurrentSpeed*3.6*multiplier) != 0){
+				location.distanceBetween (latitude, longitude, end_latitude,end_longitude,d_ar);
+				d_traveled = d_traveled + d_ar[0];//the distance between last movements and current stored in d_ar
+				latitude = end_latitude; // set old latitude to new one after movement, same for long
+				longitude = end_longitude;
+				dt.setText((d_traveled*meter_mult) + unit); //meter mult for meters to km or miles
+			}
+			if(d_traveled >= distance_total ){ // you traveled goal distance
+				//when user enters how far they want to go in either miles or kilometers we 
+				//converted it back to meters so that we could compare the total distance traveled
+				//so far (d_travleed) which is in meters, so we dont have to keep flipping back
+				//and fourth between km and miles
+				start.setVisibility(View.VISIBLE);
+				stop.setVisibility(View.GONE);
+				//done_popup.show(findViewById(R.id.done_popup), 0, -250); //prop need to fix , id.help line
+				popupWindow_done.show(findViewById(R.id.help), 0, -250);
+				//done pop up the fact that it is help id doesnt matter,
+				//you can look at popupwindow to see this
+				//d_traveled = 0; // reset distance
+				mChronometer.setBase(SystemClock.elapsedRealtime());//reset stopwatch to 0
+				mChronometer.stop();
+				stopped_time = -1;
+				distance_total = 1; // set back to default
+			}
+			
+		}
+	
+	}
+
+	
+	
+	
+	
+	 protected void startInterval() {
+		  //super.onStart();
+		              // create a new thread
+		  start_called = true;
+		  final Button start = (Button) findViewById(R.id.start);
+		  if (start.getVisibility() == View.GONE){ // if not paused keep shouting out intervals
+			  Thread background=new Thread(new Runnable() {
+	
+			   @Override
+			   public void run() {
+	
+			     try {
+			      //Thread.sleep(1000);       
+			      b.putString("My Key", "My Value: ");
+			// send message to the handler with the current message handler          
+			      //might need to fix below changing from + intervalint*1000 - intervaul_paused to, + interval_paused
+			Log.i("DemoButtonApp", "Start Interval entered");
+			Log.i("DemoButtonApp", "in start interval, SystemClock.uptimeMillis() : " + SystemClock.uptimeMillis() );
+			Log.i("DemoButtonApp", " in start interval, interval pasued" + interval_paused);
+			
+			handler.sendMessageAtTime(handler.obtainMessage(), SystemClock.uptimeMillis() + interval_paused );
+			//handler.sendMessageAtTime(handler.obtainMessage(), SystemClock.elapsedRealtime() + interval_paused );
+			//MediaPlayer mp = MediaPlayer.create(getApplicationContext() , R.raw.goodpace_audio);
+			//mp.start();
+			
+			//might need to unhide interval_paused below
+			
+			interval_paused = interval_int*1000; // set it back to nromal
+			Log.i("DemoButtonApp", "you are at least entering herjhejlkerlkjerlkjrej!!!!!");
+			Log.i("DemoButtonApp", "SystemClock.uptimeMillis() : " +  SystemClock.uptimeMillis() );
+			Log.i("DemoButtonApp", "interval int*1000 : " +  interval_int*1000 );
+			Log.i("DemoButtonApp", "interval_paused : " +  interval_paused );
+			     } catch (Exception e) {
+			      Log.v("Error", e.toString());
+			     }
+			    
+			   }
+			  });
+	
+			  background.start();
+		  }
+		 }
+	 
+	 
+	
+	/*
+	 @Override
+	 protected void onStart() {
+	  super.onStart();
+	              // create a new thread
+	  Thread background=new Thread(new Runnable() {
+
+	   @Override
+	   public void run() {
+	    for(int i=0;i<10;i++)
+	    {
+	     try {
+	      Thread.sleep(1000);       
+	      b.putString("My Key", "My Value: "+String.valueOf(i));
+	// send message to the handler with the current message handler          
+
+	handler.sendMessage(handler.obtainMessage());
+	     } catch (Exception e) {
+	      Log.v("Error", e.toString());
+	     }
+	    }
+	   }
+	  });
+
+	  background.start();
+	 }
+	*/
+	//not using any of the methods below!
+	
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+}

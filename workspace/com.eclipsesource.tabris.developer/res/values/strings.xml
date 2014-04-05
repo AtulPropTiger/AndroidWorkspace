@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tabris</string>
+    <string name="text_endpoint_url">URL</string>
+    <string name="provide_feedback"><a href="mailto:tabris@eclipsesource.com">Provide Feedback</a></string>
+    <string name="url_hint">URL</string>
+    <string name="auto_connect">Auto connect</string>
+    <string name="connect">Connect</string>
+    <string name="connect_previous">Connect to previous</string>
+    <string name="provide_url">Provide an URL to a Tabris application.</string>
+
+</resources>

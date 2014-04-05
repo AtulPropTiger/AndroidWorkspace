@@ -1,0 +1,450 @@
+package com.example.scroll;
+
+import android.app.Activity;
+import android.app.WallpaperManager;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
+import android.graphics.Paint.Style;
+import android.graphics.Picture;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.Window;
+
+
+public class MainActivity extends Activity implements Runnable {
+
+	private static Background bg1, bg2;
+	Drawable draw;
+	Drawable fast_draw;   // use main_window.setBackgroundDrawable(fast_draw); 
+	WallpaperManager wp;
+	int height = 0;
+	int width = 0;
+	Window main_window;
+	Rect rect;
+	Rect copy_rect;
+	Paint mTextPaint; 
+	Paint mPiePaint;
+	Paint mShadowPaint;
+	CustomDrawableView mCustomDrawableView;
+	Bitmap bm;
+	int doDraw_count = 0;
+	int addimage_count = 0;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		 mCustomDrawableView = new CustomDrawableView(this);
+		wp  = WallpaperManager.getInstance(this);
+		draw = wp.getDrawable();
+		fast_draw = wp.getFastDrawable(); //draw above doesn't work because it does not grab wallpaper
+		//fast enough, fast_draw works :)
+		
+		height = fast_draw.getMinimumHeight();
+		width = fast_draw.getMinimumWidth();
+		rect = new Rect(0,0,width/2,height/2);
+		//fast_draw.
+		//this.getCurrentFocus().setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackgroundResource(R.drawable.ic_launcher);
+		//Drawable bground = this.getCurrentFocus().getBackground();
+		 //final Drawable wallpaperDrawable = wp.getFastDrawable();
+		 //fast_draw.setBounds(0,0,width,height);
+		 
+		 //fast_draw.setBounds(0, height/2, width/2, 0);
+		 //getWindow().setLayout(width/2, height/2);
+		 getWindow().setBackgroundDrawable(fast_draw); /// this works and it is beautiful
+		 
+		 //fast_draw.draw(canvas);
+		 
+		 main_window = getWindow();
+		 View bg_view = getWindow().getCurrentFocus();
+		 Rect rect = fast_draw.copyBounds();
+		 copy_rect = fast_draw.copyBounds();
+		 Log.i("dimensions!!", fast_draw.getBounds() + "");
+		Log.i("dimensions!!", " width = " + width + " height = " + height);
+		//fast_draw.set
+		Rect rec2 = fast_draw.getBounds();
+	
+	 	Log.i("right = ", rec2.right + "");
+	 	Log.i("left = ", rec2.left + "");
+		//new ScrollBackGround().doInBackground();
+		
+		Thread thread = new Thread()
+		{
+		    @Override
+		    public void run() {
+		    	int count = 0;
+		    	Boolean yep = true;
+		        while(yep) {
+		        	
+		   		 Log.i("dimensions!!", fast_draw.getBounds() + "");
+		 		Log.i("dimensions!!", " width = " + width + " height = " + height);
+		        	
+		 			
+				     try {
+				         Thread.sleep(17);
+				     } catch (InterruptedException e) {
+				         e.printStackTrace();
+				     }
+				     count+=1;
+				     //if(count == 500){yep = false;}
+				}
+		    }
+		};
+
+		thread.start();
+		
+		//getWindow().setBackgroundDrawable(new BubbleSurfaceView(this));
+		//setContentView(new BubbleSurfaceView(this));
+		//setContentView(new BubbleSurfaceView(   getWindow().getDecorView().getContext()  ));
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+    
+    
+    public void start() {
+                bg1 = new Background(0,0);
+                bg2 = new Background(2160, 0);
+
+
+
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+    
+    
+
+    
+    public static Background getBg1() {
+        return bg1;
+    }
+
+    public static Background getBg2() {
+        return bg2;
+    }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+        while (true) {
+            //bg1.update();
+            //bg2.update();
+        	Log.i("this called??", "was this called the run mehtod???");
+        	copy_rect.left +=5;
+        	copy_rect.right +=5;
+        	fast_draw.setBounds(copy_rect.left, copy_rect.top, copy_rect.right, copy_rect.bottom);
+            main_window.setBackgroundDrawable(fast_draw);
+            
+            try {
+                Thread.sleep(17);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	
+	
+	public class ScrollBackGround extends AsyncTask {
+		//protected int could be protect drawable or whatever you want homes
+	     protected void doInBackground() {
+	    	 Boolean yep = true;
+	    	 int count = 0;
+	         while (yep) {
+	         	Log.i("this called??", "was this called the run mehtod???");
+	         	copy_rect.left +=5;
+	         	copy_rect.right +=5;
+	         	fast_draw.setBounds(copy_rect.left, copy_rect.top, copy_rect.right, copy_rect.bottom);
+	             main_window.setBackgroundDrawable(fast_draw);
+	             try {
+	                 Thread.sleep(17);
+	             } catch (InterruptedException e) {
+	                 e.printStackTrace();
+	             }
+	             count+=1;
+	             if(count == 500){yep = false;}
+	         }
+	    	 
+	         
+	     }
+
+	     protected void onPostExecute(Bitmap result) {
+	         //mImageView.setImageBitmap(result);
+	     }
+
+		@Override
+		protected Object doInBackground(Object... arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	 }
+	
+	
+    public class CustomDrawableView extends View {
+    	private ShapeDrawable mDrawable;
+
+	    public CustomDrawableView(Context context) {
+	    super(context);
+	
+	    int x = 10;
+	    int y = 10;
+	    int width = 300;
+	    int height = 50;
+	
+	    mDrawable = new ShapeDrawable(new OvalShape());
+	    mDrawable.getPaint().setColor(0xff74AC23);
+	    mDrawable.setBounds(x, y, x + width, y + height);
+	    }
+
+	    protected void onDraw(Canvas canvas) {
+	    mDrawable.draw(canvas);
+	    }
+    }
+    
+ 
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap); 
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+    
+    
+    public Bitmap combineImages(Bitmap c, Bitmap s) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom 
+        Bitmap cs = null; 
+
+        int width, height = 0; 
+
+        if(c.getWidth() > s.getWidth()) { 
+          width = c.getWidth() + s.getWidth(); 
+          height = c.getHeight(); 
+        } else { 
+          width = s.getWidth() + s.getWidth(); 
+          height = c.getHeight(); 
+        } 
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); 
+
+        Canvas comboImage = new Canvas(cs); 
+
+        comboImage.drawBitmap(c, 0f, 0f, null); 
+        comboImage.drawBitmap(s, c.getWidth(), 0f, null); 
+
+        // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location 
+        /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png"; 
+
+        OutputStream os = null; 
+        try { 
+          os = new FileOutputStream(loc + tmpImg); 
+          cs.compress(CompressFormat.PNG, 100, os); 
+        } catch(IOException e) { 
+          Log.e("combineImages", "problem combining images", e); 
+        }*/ 
+
+        return cs; 
+      } 
+    
+    
+	/* *************************************************************************************************** */
+	/* ********************             Bubble surface view class START         ************************** */   
+	/* *************************************************************************************************** */
+    
+    public class BubbleSurfaceView extends SurfaceView  
+	    							implements SurfaceHolder.Callback {
+    	private Context ctx = null;
+		private SurfaceHolder sh;
+		private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		BubbleThread thread;
+		public BubbleSurfaceView(Context context) {
+			super(context);
+			sh = getHolder();
+			sh.addCallback(this);
+			paint.setColor(Color.BLUE);
+			paint.setStyle(Style.FILL); //this paint import be wrong could be path one but doubt it
+			ctx = context;
+			setFocusable(true);
+		}
+		
+		public BubbleThread getThread(){
+			return thread;
+		}
+		
+		public void surfaceCreated(SurfaceHolder holder) {
+			/*
+			Canvas canvas = sh.lockCanvas();
+			canvas.drawColor(Color.BLACK);
+			canvas.drawCircle(100, 200, 50, paint);
+			sh.unlockCanvasAndPost(canvas);
+			*/
+			//do i need to remove 4 lines above? Ill come back
+		    thread = new BubbleThread(sh, ctx, new Handler());
+		    thread.setRunning(true);
+		    thread.start();
+		}
+		public void surfaceChanged(SurfaceHolder holder, int format, int width,
+		int height) {
+			thread.setSurfaceSize(width, height);
+		}
+		public void surfaceDestroyed(SurfaceHolder holder) {
+			
+		    boolean retry = true;
+		    thread.setRunning(false);
+		    while (retry) {
+		      try {
+		        thread.join();
+		        retry = false;
+		      } catch (InterruptedException e) {
+		      }
+		    }
+		}
+		
+		
+	    /* ************************************************************************************ */
+	    /* ********************                   Bubble Thread START                 ********** */   
+	    /* ************************************************************************************** */
+		
+		class BubbleThread extends Thread {
+			  private int canvasWidth = 200;
+			  private int canvasHeight = 400;
+			  private static final int SPEED = 5;
+			  private boolean run = false;
+			    
+			  private float bubbleX;
+			  private float bubbleY;
+			  private float headingX;
+			  private float headingY;
+			    
+			  public BubbleThread(SurfaceHolder surfaceHolder, Context context,
+			         Handler handler) {
+			    sh = surfaceHolder;
+			    handler = handler;
+			    //Context ctx = context;
+			    ctx = context;
+			  }
+			  
+			  public void doStart() {
+			    synchronized (sh) {
+			      // Start bubble in centre and create some random motion
+			      bubbleX = 0;//canvasWidth ;/// 2;
+			      bubbleY = 0;//canvasHeight ;/// 2;
+			      //headingX = (float) (-1 + (Math.random() * 2));
+			      //headingY = (float) (-1 + (Math.random() * 2));
+			      headingX = (float) (-2);   // negative makes canvas scroll to the right, pos goes left
+			      headingY = (float) (-2);
+			    }
+			  }
+			  
+			  public void run() {
+			    while (run) {
+			      Canvas c = null;
+			      try {
+			        c = sh.lockCanvas(null);
+			        synchronized (sh) {
+			          doDraw(c);
+			        }
+			      } finally {
+			        if (c != null) {
+			          sh.unlockCanvasAndPost(c);
+			          //main_window.setBackgroundDrawable();
+			          
+			        }
+			      }
+			    }
+			  }
+			    
+			  public void setRunning(boolean b) { 
+			    run = b;
+			  }
+			  
+			  public void setSurfaceSize(int width, int height) {
+			    synchronized (sh) {
+			      canvasWidth = width;
+			      canvasHeight = height;
+			      doStart();
+			    }
+			  }
+			  
+			  private void doDraw(Canvas canvas) {
+				
+			    bubbleX = bubbleX + (headingX * SPEED);
+			    bubbleY = bubbleY + (headingY * SPEED);   //im not changing the y stupid, don't need this
+			    //canvas.save(); // a save was missing but I am not sure where to put it? here ? idk
+			    canvas.restore();
+			    //canvas.drawColor(Color.BLACK);
+			    //canvas.drawCircle(bubbleX, bubbleY, 50, paint);
+			    //if(bubbleX <= fast_draw.getMinimumWidth()*-1){ bubbleX = 0;}
+			    Log.i("bubblex ", " bubbleX = "+ bubbleX);
+			    if (doDraw_count == 0){
+			    	bm = drawableToBitmap(fast_draw); // i should probably move this to init, need to better understand the order
+			    }
+			    
+			    //this way doesn't work , I run out of memory
+			    if (bubbleX<= width/2*-1){
+			    	if (addimage_count == 0){
+				    	bm = combineImages(bm, drawableToBitmap(fast_draw)); //add bitmap onto end of current
+				    	width = bm.getWidth();
+				    	addimage_count +=1;
+			    	}
+			    	else{
+			    		
+			    	}
+			    }
+			    
+			    if (bubbleX == width/2*-1){
+			    	bubbleX =0;
+			    }
+			    
+			    /*
+			    if (bubbleX<= width/2*-1){
+			    	bubbleX = 0;
+			    	
+			    }
+			    */
+			    canvas.drawBitmap(bm, bubbleX, 0, null);
+			    
+			    
+			    
+			    doDraw_count+=1; 
+			   
+			  }
+			}
+			
+		    /* ******************************************************************************************* */
+		    /* ********************                   Bubble Thread END                 **************** */   
+		    /* ******************************************************************************************* */
+		
+	}
+	
+    /* *************************************************************************************************** */
+    /* ********************             Bubble surface view class END           ************************** */   
+    /* *************************************************************************************************** */
+    
+}
+    

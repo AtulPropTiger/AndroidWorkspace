@@ -1,0 +1,104 @@
+package com.smart.taskbar;
+
+
+
+import android.app.Service;
+import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.os.IBinder;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class HUD extends Service implements OnTouchListener {
+    Button mButton;
+    @Override
+    public IBinder
+    onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //mView = new HUDView(this);
+        mButton = new Button(this);
+        Toast.makeText(this,"HUD starting up!", Toast.LENGTH_SHORT).show();
+        mButton.setText("Overlay button");
+        mButton.setOnTouchListener(this);
+        
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        		
+        		//I am modifiying this 2/4/14
+        		/*
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_PHONE, // chaned to phone 2/4/14 , from system overlay
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                PixelFormat.TRANSLUCENT);
+                */ //this is the original, just the type phone line changed
+        
+		        WindowManager.LayoutParams.WRAP_CONTENT,
+		        WindowManager.LayoutParams.WRAP_CONTENT,
+		        WindowManager.LayoutParams.TYPE_PHONE, // chaned to phone 2/4/14 , from system overlay
+		        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+		        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | 
+		        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+        		//above is the test
+
+        
+        
+        params.gravity = Gravity.RIGHT | Gravity.TOP;
+        params.setTitle("Load Average");
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        wm.addView(mButton, params);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mButton != null)
+        {
+            ((WindowManager) getSystemService(WINDOW_SERVICE)).removeView(mButton);
+            mButton = null;
+        }
+    }
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		int action_type_int = event.getAction(); //int constant for motion type, 1 is motion down etc.
+		String action_type = ""; //motion down, motion up etc. defined by int constants in switch below
+
+		//below will always say touch outside if i don't press the actual overlay button,
+		//i need to make it cover the whole screen and fully transperent.
+		if (action_type_int == 0){action_type = "Touch Down";}
+		else if((action_type_int == 1)){action_type = "Touch Up";}
+		else if((action_type_int == 2)){action_type = "Touch Move";}
+		else if((action_type_int == 4)){action_type = "Touch Outside";}
+		else if((action_type_int == 8)){action_type = "Touch Scroll";}
+		else{action_type = "Touch Unknown";}
+		
+	    	
+	
+		int pointer_index = event.getActionIndex(); //location where event above occured
+		int pointer_id = event.getPointerId(pointer_index); //pointer id of the pointer_index
+		float x_cord = event.getX(pointer_index); 
+		float y_cord = event.getY(pointer_index);
+		long down_time = event.getDownTime(); // i beleive long press is 1000 ms/1sec could be 500ms
+		String press_time = "ShortPress";
+		if (down_time >= 1000){press_time = "LongPress";} //pressed screen for a sec or more, = longpress
+        //Toast.makeText(this,"Overlay button event", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,press_time + action_type + " at{" + x_cord + "," + y_cord + "}" 
+        		, Toast.LENGTH_SHORT).show();
+        
+        Log.i("TOUCHHHHHHHHHHHH", " you touched me up in this");
+		return false;
+	}
+    
+    
+}

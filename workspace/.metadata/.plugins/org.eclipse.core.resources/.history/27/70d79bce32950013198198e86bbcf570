@@ -1,0 +1,81 @@
+package com.example.scroll;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.WallpaperManager;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
+
+
+public class MainActivity extends Activity implements Runnable {
+
+	private static Background bg1, bg2;
+	Drawable draw;
+	WallpaperManager wp;
+	int height = 0;
+	int width = 0;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		wp  = WallpaperManager.getInstance(this);
+		draw = wp.getDrawable();
+		height = draw.getMinimumHeight();
+		width = draw.getMinimumWidth();
+		//this.getCurrentFocus().setBackground(draw);
+		//this.findViewById(R.layout.activity_main).setBackground(draw);
+		this.getCurrentFocus().setBackgroundResource(R.drawable.ic_launcher);
+		Log.i("dimensions!!", " width = " + width + " height = " + height);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+    
+    
+    public void start() {
+                bg1 = new Background(0,0);
+                bg2 = new Background(2160, 0);
+
+
+
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+    
+    
+
+    
+    public static Background getBg1() {
+        return bg1;
+    }
+
+    public static Background getBg2() {
+        return bg2;
+    }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+        while (true) {
+            bg1.update();
+            bg2.update();
+            
+            
+            try {
+                Thread.sleep(17);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	
+    
+}

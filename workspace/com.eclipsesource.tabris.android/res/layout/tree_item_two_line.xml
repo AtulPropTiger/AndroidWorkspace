@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tree_item"
+    style="@style/TreeItem"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/tree_item_image_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dip"
+        android:paddingRight="8dip"
+        android:paddingTop="8dip"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/text_layout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/tree_item_height"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tree_item_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tree_item_desc_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/tree_item_alt_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="0"
+        android:background="@drawable/list_item_menu_indicator_bg"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+</LinearLayout>

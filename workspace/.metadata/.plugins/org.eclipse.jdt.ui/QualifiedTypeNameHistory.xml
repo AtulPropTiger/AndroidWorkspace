@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="card.Card"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.location.LocationManager"/>
+<fullyQualifiedTypeName name="android.location.LocationListener"/>
+<fullyQualifiedTypeName name="com.example.speed.R.id"/>
+<fullyQualifiedTypeName name="com.example.speed.R.layout"/>
+<fullyQualifiedTypeName name="com.example.speed.MainActivity"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="android.view.MenuItem"/>
+<fullyQualifiedTypeName name="android.support.v4.app.NavUtils"/>
+<fullyQualifiedTypeName name="android.app.Fragment"/>
+<fullyQualifiedTypeName name="android.os.UserHandle"/>
+<fullyQualifiedTypeName name="android.content.pm.ResolveInfo"/>
+<fullyQualifiedTypeName name="android.content.pm.ActivityInfo"/>
+<fullyQualifiedTypeName name="android.content.IntentFilter"/>
+<fullyQualifiedTypeName name="android.content.BroadcastReceiver"/>
+<fullyQualifiedTypeName name="android.view.SurfaceView"/>
+<fullyQualifiedTypeName name="android.view.SurfaceHolder"/>
+<fullyQualifiedTypeName name="android.graphics.Color"/>
+<fullyQualifiedTypeName name="android.graphics.Paint.Style"/>
+<fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="android.graphics.Picture"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="com.example.scroll.MainActivity.thisThread2"/>
+<fullyQualifiedTypeName name="filepack.CopyFile"/>
+<fullyQualifiedTypeName name="android.net.Uri"/>
+<fullyQualifiedTypeName name="android.media.RingtoneManager"/>
+<fullyQualifiedTypeName name="android.media.Ringtone"/>
+<fullyQualifiedTypeName name="java.util.Calendar"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.media.AudioManager"/>
+<fullyQualifiedTypeName name="android.view.KeyEvent"/>
+<fullyQualifiedTypeName name="android.view.WindowManager"/>
+<fullyQualifiedTypeName name="android.content.DialogInterface.OnKeyListener"/>
+<fullyQualifiedTypeName name="android.media.MediaPlayer"/>
+<fullyQualifiedTypeName name="android.os.SystemClock"/>
+<fullyQualifiedTypeName name="com.example.storage.R.id"/>
+<fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="android.support.v7.appcompat.R"/>
+</qualifiedTypeNameHistroy>

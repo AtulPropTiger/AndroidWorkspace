@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/btStart"
+        android:onClick="startRepeatingTimer"
+        tools:context=".WidgetAlarmManagerActivity" />
+    <Button
+        android:id="@+id/btCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/btCancel"
+        android:onClick="cancelRepeatingTimer"
+        tools:context=".WidgetAlarmManagerActivity" />
+	<Button
+        android:id="@+id/btOneTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/btOneTime"
+        android:onClick="onetimeTimer"
+        tools:context=".WidgetAlarmManagerActivity" />
+ 	<Button
+        android:id="@+id/savealarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/savealarm"
+        android:onClick="setAlarmText"
+        tools:context=".WidgetAlarmManagerActivity" />
+ 	<Button
+        android:id="@+id/readcurrent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/readcurrent"
+        android:onClick="readCurrent"
+        tools:context=".WidgetAlarmManagerActivity" />
+	
+   <EditText
+        android:id="@+id/hour"
+        android:inputType="number" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="8"
+        android:hint="hour" />
+	    
+  <EditText
+        android:id="@+id/minutes"
+        android:inputType="number" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="8"
+        android:hint = "minutes" />
+  
+  <EditText
+        android:id="@+id/alarm_number"
+        android:inputType="number" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="8"
+        android:hint = "alarm number" />
+      
+  
+ <EditText
+        android:id="@+id/alarm_duration"
+        android:inputType="number" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="8"
+        android:hint = "duration (mins)" />
+</LinearLayout>

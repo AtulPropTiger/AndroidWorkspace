@@ -1,0 +1,244 @@
+package com.androidhive.texttospeech;
+
+import java.util.Locale;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class AndroidTextToSpeechActivity extends Activity implements
+		TextToSpeech.OnInitListener {
+	/** Called when the activity is first created. */
+
+	private TextToSpeech tts;
+	private Button btnSpeak;
+	private EditText txtText;
+	
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		
+		int[] ab_interval_time = new int[80]; // seconds that particular movement takes
+		String[] ab_interval_movement = new String[80]; //the movement to do ,time it takes above
+		ab_interval_time[0] = 0; ab_interval_movement[0] = "ab intevals start";
+		ab_interval_time[1] = 5; ab_interval_movement[1] = "child's pose";
+		ab_interval_time[2] = 5; ab_interval_movement[2] = "plank";
+		ab_interval_time[3] = 5; ab_interval_movement[3] = "child's pose";
+		ab_interval_time[4] = 5; ab_interval_movement[4] = "plank";
+		ab_interval_time[5] = 5; ab_interval_movement[5] = "child's pose ";
+		ab_interval_time[6] = 5; ab_interval_movement[6] = "plank";
+		ab_interval_time[7] = 5; ab_interval_movement[7] = "downward dog";
+		ab_interval_time[8] = 5; ab_interval_movement[8] = "plank";
+		ab_interval_time[9] = 5; ab_interval_movement[9] = "downward dog";
+		ab_interval_time[10] = 5; ab_interval_movement[10] = "plank";
+		ab_interval_time[11] = 5; ab_interval_movement[11] = "downward dog";
+		ab_interval_time[12] = 5; ab_interval_movement[12] = "plank";
+		ab_interval_time[13] = 5; ab_interval_movement[13] = "downward dog";
+		ab_interval_time[14] = 5; ab_interval_movement[14] = "plank";
+		ab_interval_time[15] = 5; ab_interval_movement[15] = "downward dog";
+		ab_interval_time[16] = 5; ab_interval_movement[16] = "left spider";
+		ab_interval_time[17] = 5; ab_interval_movement[17] = "downward dog";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "right spider";
+		ab_interval_time[17] = 5; ab_interval_movement[17] = "downward dog";
+		ab_interval_time[16] = 5; ab_interval_movement[16] = "left spider";
+		ab_interval_time[17] = 5; ab_interval_movement[17] = "downward dog";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "right spider";
+		ab_interval_time[16] = 5; ab_interval_movement[16] = "oblique left";
+		ab_interval_time[17] = 5; ab_interval_movement[17] = "downward dog";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "oblique right";
+		ab_interval_time[17] = 15; ab_interval_movement[17] = "low plank hold";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "left plank hold";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "sit break";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "vee sit ";
+		ab_interval_time[18] = 17; ab_interval_movement[18] = "left side hip up";
+		ab_interval_time[18] = 18; ab_interval_movement[18] = "low plank pulses";
+		ab_interval_time[18] = 18; ab_interval_movement[18] = "right side hold";
+		ab_interval_time[18] = 20; ab_interval_movement[18] = "vee sit hands in air";
+		ab_interval_time[18] = 18; ab_interval_movement[18] = "right side hip up";
+		ab_interval_time[18] = 4; ab_interval_movement[18] = "stand up";
+		ab_interval_time[18] = 45; ab_interval_movement[18] = "cardio recovery two hand cross knee tap";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = " lay down";
+		ab_interval_time[18] = 28; ab_interval_movement[18] = "flat back alternate leg raise";
+		ab_interval_time[18] = 28; ab_interval_movement[18] = "flat back left arm left leg tap";
+		ab_interval_time[18] = 28; ab_interval_movement[18] = "switch to right leg and arm";
+		ab_interval_time[18] = 28; ab_interval_movement[18] = "both arm and leg taps";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "stand up";
+		ab_interval_time[18] = 54; ab_interval_movement[18] = "sprint foward, then back, then shuffle";
+		ab_interval_time[18] = 6; ab_interval_movement[18] = "lay down";
+		ab_interval_time[18] = 28; ab_interval_movement[18] = "flat back scissors, don't touch heels";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "left arm left leg scissors";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "right arm right leg scissors";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "now both legs and arms";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "stand up";
+		ab_interval_time[18] = 60; ab_interval_movement[18] = "hop hop squat";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "sit down";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "alternate leg heel taps heels can touch";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "both heels in and out heels can touch";
+		ab_interval_time[18] = 25; ab_interval_movement[18] = "heels up then touch heels down";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "bend right knee in left leg up";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "switch legs";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "stand up";
+		ab_interval_time[18] = 55; ab_interval_movement[18] = "sprint turn left turn right squat hold";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "alternate heel taps heels off ground";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "heels in and out both heels off ground";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "hold left leg out right knee bent";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "switch legs";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "left leg again move it up and down";
+		ab_interval_time[18] = 15; ab_interval_movement[18] = "switch legs";
+		ab_interval_time[18] = 5; ab_interval_movement[18] = "stand up";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "right leg hop kick";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "left leg hop kick";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "superman";
+		ab_interval_time[18] = 25; ab_interval_movement[18] = "superman pull up";
+		ab_interval_time[18] = 35; ab_interval_movement[18] = "superman arms to side then to front";
+		ab_interval_time[18] = 30; ab_interval_movement[18] = "superman hold arms to side";
+		
+		
+		
+		child to plank alternate every 5 sec til 01:00 
+		01:00 downward dog
+		01:05 plank
+		alternate downward dog to plank until 1:40
+		1:45 left spider
+		1:50 downard dog
+		1:55 right spider
+		2:00 downard dog
+		2:05 left spider
+		2:10 downward dog
+		2:15 right spider
+		2:20 oblique left
+		2:25 downward dog
+		2:30 oblique right
+		2:35 low plank hold
+		2:50 left plank hold
+		3:05 set up v sit
+		3:10 start v sit
+		3:25 left side hip up
+		3:42 low plank pulses
+		4:00 right side hold
+		4:18 v sit hands in air
+		4:38 right side hip up
+		4:56 stand up
+		5:00 two hand cross knee tap
+		5:45 lay down
+		5:50 flat back alternate leg raise
+		6:20  flat back same arm same leg tap
+		6:48 switch leg and arm
+		7:15 both arm and leg taps
+		7:43 stand up
+		7:48 sprint foward, then back, then shuffle 
+		8:42 lay down
+		8:48 flat back scissor (don't touch heels)
+		9:10 same arm same leg scissor
+		9:40 switch leg and arm
+		10:10 both leg and arm taps
+		10:40 stand up
+		10:45 hop hop squat
+		11:45 sit down
+		11:50 alternate heelp taps (heels can touch)
+		12:15 both heels out and in(heels touch)
+		12:50 heels up then down touch
+		13:15 sit , bend right knee left leg up
+		13:30 switch legs
+		13:45 stand up
+		13:50 sprint , turn left ,turn right, squat hold
+		14:45 alternate heel taps (heel out is off ground)
+		15:15 both heels out and in (heels off ground)
+		15:45 left leg out, right knee bent
+		16:05 switch legs
+		16:15 switch leg , go up and down
+		16:30 switch leg , go up and down
+		16:40 stand up
+		16:45 right leg  hop kick
+		17:10 left leg hop kick
+		17:45 superman
+		18:15 superman pull up 
+		18:40 superman arms to side then out in front
+		19:15 superman rocketman ,arms to side
+		19:45 side to side mountain climbers
+		20:47 elbow plank, alternate leg in and out
+		21:15 left up right up back back
+		21:45 add pike up while legs in
+		22:10 pike up then down
+		22:45 sprint
+		22:51 left leg tabletop hold
+		23:01 sprint
+		23:07 right 
+		23:17 sprint
+		23:23 left   
+		23:33 sprint
+		23:39 right 
+		23:49 sprint
+		23:55 down back wide in and out abs
+		24:45 high jog
+		25:10  slow alternate legs high jog
+		25:30 Done! 3 minutes 30 seconds stretch
+		
+		tts = new TextToSpeech(this, this);
+
+		btnSpeak = (Button) findViewById(R.id.btnSpeak);
+
+		txtText = (EditText) findViewById(R.id.txtText);
+
+		// button on click event
+		btnSpeak.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				speakOut();
+			}
+
+		});
+	}
+
+	@Override
+	public void onDestroy() {
+		// Don't forget to shutdown!
+		if (tts != null) {
+			tts.stop();
+			tts.shutdown();
+		}
+		super.onDestroy();
+	}
+
+	@Override
+	public void onInit(int status) {
+		// TODO Auto-generated method stub
+
+		if (status == TextToSpeech.SUCCESS) {
+
+			int result = tts.setLanguage(Locale.US);
+
+			// tts.setPitch(5); // set pitch level
+
+			// tts.setSpeechRate(2); // set speech speed rate
+
+			if (result == TextToSpeech.LANG_MISSING_DATA
+					|| result == TextToSpeech.LANG_NOT_SUPPORTED) {
+				Log.e("TTS", "Language is not supported");
+			} else {
+				btnSpeak.setEnabled(true);
+				speakOut();
+			}
+
+		} else {
+			Log.e("TTS", "Initilization Failed");
+		}
+
+	}
+
+	private void speakOut() {
+
+		//String text = txtText.getText().toString();
+		String text = " ab intervals";
+
+		tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+	}
+}

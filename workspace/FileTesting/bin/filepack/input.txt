@@ -1,0 +1,7 @@
+This is test for copy file. yo
+new cop stuff
+this work
+maybe?
+idk yet is it though
+i hope it is
+alarm1 time8:0 length20 days[M:Y,T:Y,W:Y,H:Y,F:Y,S:Y,U:Y]

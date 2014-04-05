@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <!-- comes pre made  -->
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+    
+    <item android:id="@+id/tweeters" 
+        android:icon="@drawable-hdpi/ic_launcher.png" 
+        android:showAsAction="never" 
+        android:orderInCategory="3"
+        />
+    
+    <item android:id="@+id/facebook" 
+        android:title="Facebook" 
+        android:showAsAction="always" 
+        android:orderInCategory="2"
+        />
+    
+    <item android:id="@+id/refresh" 
+        android:title="Refresh" 
+        android:showAsAction="always" 
+        android:orderInCategory="1"
+        />
+    
+	<!-- if they dont fit on screen they will be in the 3 little squares menu next to the ones that do -->
+    
+</menu>

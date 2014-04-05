@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="C:\Users\rtack_000\git\tacketra-hw04-testscores\.git" key="GitSelectRepositoryPage.lastRepository"/>
+	<item value="2" key="org.eclipse.egit.ui.internal.clone.GitSelectWizardPageWizardSel"/>
+	<item value="true" key="CommitDialog.showUntracked"/>
+	<list key="CommitDialog.authorValues">
+		<item value="Ryan Tackett &lt;tacketra@mail.uc.edu&gt;"/>
+	</list>
+	<list key="CommitDialog.committerValues">
+		<item value="Ryan Tackett &lt;tacketra@mail.uc.edu&gt;"/>
+	</list>
+	<list key="RepositorySelectionPage.UsedUris">
+		<item value="https://github.uc.edu/tacketra/Ryan-Tackett.git"/>
+		<item value="https://github.uc.edu/CS2-Fall2013/tacketra-hw04-testscores.git"/>
+		<item value="https://github.uc.edu/CS2-Fall2013/tacketra-hw04-testscores"/>
+	</list>
+	<section name="GitCommitSearchPage">
+		<item value="0" key="HISTORY_SIZE"/>
+	</section>
+	<section name="GitImportWizard">
+	</section>
+	<section name="GitCommitMessageComponent">
+	</section>
+	<section name="org.eclipse.egit.ui.internal.dialogs.MergeTargetSelectionDialog.dialogBounds">
+		<item value="538" key="DIALOG_WIDTH"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="119" key="DIALOG_X_ORIGIN"/>
+		<item value="658" key="DIALOG_HEIGHT"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.push.PushResultDialog.dialogBounds">
+		<item value="666" key="DIALOG_WIDTH"/>
+		<item value="67" key="DIALOG_Y_ORIGIN"/>
+		<item value="458" key="DIALOG_HEIGHT"/>
+		<item value="358" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+</section>

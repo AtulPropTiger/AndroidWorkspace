@@ -1,0 +1,94 @@
+package com.rakesh.alarmmanagerexample;
+
+import java.io.IOException;
+
+import com.rakesh.alarmmanagerexample.R;
+
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.support.v4.app.NavUtils;
+
+public class AlarmManagerActivity extends Activity {
+
+	public Ringtone r;
+	private AlarmManagerBroadcastReceiver alarm;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alarm_manager);
+        alarm = new AlarmManagerBroadcastReceiver();
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        AudioManager mgr=null;
+        mgr=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    }
+    
+    public static Ringtone getRingtone(Context context){
+        Uri alarm_ring = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        return RingtoneManager.getRingtone(context, alarm_ring);
+    }
+    
+
+    
+    @Override
+	protected void onStart() {
+		super.onStart();
+	}
+
+    public void startRepeatingTimer(View view) {
+    	Context context = this.getApplicationContext();
+    	if(alarm != null){
+    		alarm.SetAlarm(context);
+    	}else{
+    		Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
+    	}
+    }
+    
+    public void cancelRepeatingTimer(View view){
+    	Context context = this.getApplicationContext();
+    	if(alarm != null){
+    		alarm.CancelAlarm(context);
+    	}else{
+    		Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
+    	}
+    }
+    
+    public void onetimeTimer(View view) throws IOException{
+    	Context context = this.getApplicationContext();
+    	final EditText hour = (EditText) findViewById(R.id.hour);
+    	final EditText minutes = (EditText) findViewById(R.id.minutes);
+    	final EditText alarm_num = (EditText) findViewById(R.id.alarm_number);
+    	int hour_int = Integer.parseInt( hour.getText().toString() );
+    	int minutes_int = Integer.parseInt( minutes.getText().toString() );
+    	int alarm_number = Integer.parseInt( alarm_num.getText().toString() );
+    	Log.i("past the string onversion", "past the string conversion");
+    	if(alarm != null){
+    		alarm.setOnetimeTimer(context, hour_int, minutes_int, false, alarm_number);
+    	}else{
+    		Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
+    	}
+    }
+    
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_widget_alarm_manager, menu);
+        return true;
+    }
+	
+	public void setAlarmText(){
+		
+	}
+
+    
+}

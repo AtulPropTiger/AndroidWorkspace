@@ -1,0 +1,7 @@
+13:06:39 **** Incremental Build of configuration Debug for project HellWorldcpp ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\HellWorldcpp.o" "..\\src\\HellWorldcpp.cpp" 
+g++ -o HellWorldcpp.exe "src\\HellWorldcpp.o" 
+
+13:06:41 Build Finished (took 2s.475ms)
+

@@ -1,0 +1,947 @@
+package com.example.scroll;
+
+
+
+import java.io.File;
+import java.util.Random;
+
+import android.app.Activity;
+import android.app.Service;
+import android.app.WallpaperManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Bitmap.Config;
+import android.graphics.Paint.Style;
+import android.graphics.Picture;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewOverlay;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+//brown is probably -12,000,000
+
+public class MainActivity extends Activity implements  OnTouchListener {
+
+	private static Background bg1, bg2;
+	Drawable draw;
+	Drawable fast_draw;   // use main_window.setBackgroundDrawable(fast_draw); 
+	WallpaperManager wp;
+	int height = 0;
+	int width = 0;
+	Window main_window;
+	Rect rect;
+	Rect copy_rect;
+	int doDraw_count = 0;
+	int addimage_count = 0;
+	int circle_h = 0;
+	int circle_gravity = 0;
+	int bird_height = 0;
+	int bird_width = 0;
+	int first_tree_num = 0; //keep track of second to last tree to be drawn, will become first slot of next bm
+	int second_tree_num = 0; // same as above but last tree will becom the second tree
+	Boolean circle_up = false;
+	int circle_up_count = 0;
+	static Bitmap dr_bm;
+	Bitmap dr_bm_wing_mid;
+	Bitmap dr_bm_wing_up;
+	Bitmap trunk_bm;
+	Bitmap trunkt_bm;
+	Bitmap bm;
+	//Bitmap bm_blank;
+	Thread the_tree_thread;
+	Thread the_bird_thread;
+	Boolean canvas_bool;
+	Random rand = new Random(); 
+	int rand_num = 0;
+    int under_width, under_height ;
+    int over_width , over_height;
+    int over_top_width , over_top_height ;
+    int divider1= 0, divider2 = 0, divider3 = 0;
+    //Bitmap old_trunk_bottom =null, old_trunk_top = null;
+    Boolean temp_bool = true;
+	Bitmap bm2;
+	int bird_flap = 0;
+
+	Boolean yeper = false;
+	int[] rect_corners = new int[7];
+    int[] rect_corners_pixels = new int[7];
+    int[] rect_cornersX = new int[11];
+    int[] rect_cornersY = new int[11];
+    Boolean wait_around = false;
+    int wait_count = 0;
+    int bubbleX = 0;
+    Bitmap temp_bitmap ;
+    SurfaceView sv ;
+    Boolean alive = true; // if false you lost the game, bird died
+    TextView text_score = null;
+    int fast_draw_width = 0;
+    Resources res = null;
+    Paint paint_text = null;
+    int score = 0;
+    int tree_width = 0;
+    int collision_count = 0;
+    int collision_thread_count = 0;
+    Boolean start_count = false;
+    Boolean bubble_bool = false;
+    int track = 0;
+    Boolean flip = false;
+    Boolean pause_bm_thread = false;
+    Boolean pause_collision_thread = false;
+    
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		deleteCache(this.getApplicationContext()); //
+		
+		getWindow().setFlags(
+			    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+			    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+
+	    paint_text = new Paint(); 
+	    paint_text.setColor(Color.WHITE); 
+	    paint_text.setStyle(Style.FILL); 
+	    paint_text.setAntiAlias(true); //smooths out edges of paint
+	    paint_text.setTextSize(100); 
+		res = getResources();
+		
+	    Drawable trunk_dr = res.getDrawable(R.drawable.trunkbottomred); //change to tree
+	    Drawable trunk_dr_t = res.getDrawable(R.drawable.trunktopred); //change to tree
+		Drawable dr = res.getDrawable(R.drawable.birdcrop35);
+		//Drawable dr_wmid = res.getDrawable(R.drawable.birdcrop35_wing_mid);
+		//Drawable dr_wup = res.getDrawable(R.drawable.birdcrop35_wing_up);
+		//Drawable dr_wmid = res.getDrawable(R.drawable.wing_mid_crop);
+		//Drawable dr_wup = res.getDrawable(R.drawable.wind_up_crop);
+		
+		Bitmap trunk_bm_orig = drawableToBitmap(trunk_dr);
+		trunk_dr = null;
+		trunk_bm = trunk_bm_orig.copy(Bitmap.Config.ARGB_8888, true);   // trying to mmake a copy and see if it lets me make mutable
+		trunk_bm.setHasAlpha(true);    
+		tree_width = trunk_bm.getWidth(); // I get this here just because I will use it later w/ score, could grab from thread but eh
+		tree_thread.start();
+		
+		Bitmap trunkt_bm_orig = drawableToBitmap(trunk_dr_t);
+		trunk_dr_t = null;
+		trunkt_bm = trunkt_bm_orig.copy(Bitmap.Config.ARGB_8888, true);   // trying to mmake a copy and see if it lets me make mutable
+		trunkt_bm.setHasAlpha(true);    
+		tree_thread_top.start();
+		
+		Bitmap dr_bm_orig = drawableToBitmap(dr);
+		//Bitmap dr_bm_orig_wup = drawableToBitmap(dr_wup);
+		//Bitmap dr_bm_orig_wmid = drawableToBitmap(dr_wmid);
+		
+		dr = null; //dr_wmid = null; dr_wup = null;
+		dr_bm = dr_bm_orig.copy(Bitmap.Config.ARGB_8888, true);   // trying to mmake a copy and see if it lets me make mutable
+		dr_bm.setHasAlpha(true);               // had to set it to let it have alpha values, so it can have transparent pixels
+		bird_height = dr_bm.getHeight();
+		bird_width = dr_bm.getWidth();
+		bird_thread.start();		
+		/*
+		dr_bm_wing_mid = dr_bm_orig_wmid.copy(Bitmap.Config.ARGB_8888, true);   // trying to mmake a copy and see if it lets me make mutable
+		dr_bm_wing_mid.setHasAlpha(true);               // had to set it to let it have alpha values, so it can have transparent pixels
+		bird_wing_mid_thread.start();
+		
+		dr_bm_wing_up = dr_bm_orig_wup.copy(Bitmap.Config.ARGB_8888, true);   // trying to mmake a copy and see if it lets me make mutable
+		dr_bm_wing_up.setHasAlpha(true);               // had to set it to let it have alpha values, so it can have transparent pixels
+		bird_wing_up_thread.start();
+		*/
+		
+		wp  = WallpaperManager.getInstance(this);
+		fast_draw = wp.getFastDrawable(); //draw above doesn't work because it does not grab wallpaper
+		bm = combineImages(drawableToBitmap(fast_draw), drawableToBitmap(fast_draw));	
+		
+		//bm_blank = bm;
+
+		height = fast_draw.getMinimumHeight();
+		width = fast_draw.getMinimumWidth();
+		fast_draw_width = width;
+		circle_h = height/2;
+		fast_draw = null;
+		//wp = null;
+
+		while(wait_count < 3){} // wait for tree top thread to finish
+		
+		for (int i = 2; i <  5; i++){
+			   rand_num = rand.nextInt(700);
+			   bm = pasteOnTop(bm, trunk_bm, trunkt_bm, rand_num ,i );	
+			   if ( i == 3){      first_tree_num = rand_num;    }
+			   if ( i == 4){      second_tree_num = rand_num;   }
+		}
+		
+		sv = new BubbleSurfaceView(this);
+		setContentView(sv);
+		sv.setOnTouchListener(this);	
+
+	}
+
+	public Bitmap getBlankBm(){
+		return combineImages(drawableToBitmap(wp.getFastDrawable()), drawableToBitmap(wp.getFastDrawable()));
+	}
+	
+	public Bitmap getWingMidBm(){
+		return drawableToBitmap(res.getDrawable(R.drawable.wing_mid_crop));
+	}
+	
+	public Bitmap getWingUpBm(){
+		return drawableToBitmap(res.getDrawable(R.drawable.wind_up_crop));
+	}
+	
+	Thread tree_thread = new Thread()
+	{
+	    @Override
+	    public void run() {
+	    	Boolean yep = true;
+	        while(yep) {
+	    		int tree_width = trunk_bm.getWidth();
+	    		int tree_height = trunk_bm.getHeight();
+	    		// CHANGE TREE WIDTH AND HEIGHT TO BIRD WIDTH AND HEIGHT IT IS SO DECEIVING, THIS IS FOR BIRD NOT TREE!!!!!!!!!!!!!!!!
+	    		int[] pixels = new int[tree_width * tree_height]; // total number of pixels in this image
+	    		trunk_bm.getPixels(pixels  , 0  ,   tree_width  /*stride either 0 or width idk*/  , 0  , 0  ,   tree_width ,    tree_height);	//populate pixels array 
+	    		Boolean red = false;
+	    		int count = 0;
+	    		for (int i = 0; i < pixels.length; i++){
+	    			
+	    			if ( pixels[i] >= -7011681  && pixels[i] < -1000 ){  // white equals this or -1, idk how they want represented, shouldn't matter
+	    				int x = i%tree_width;
+	    				int y = i/tree_width; // hopefully this floors the double it should.
+	    				//Log.i("x & y  ", "x = " + x + " y = " + y);
+	    				//Log.i(" pixel length", " total= " + pixels.length + " width = " + tree_width + " height = " + tree_height) ;
+
+	    				trunk_bm.setPixel(x, y, 0x00000000);
+
+	    				
+	    				//dr_bm.setPixel(x, y,0xff00ff00); // shhould make green, test cuz of above transparent causing crash
+	    				//dr_bm.setPixel(0, 0, Color.TRANSPARENT);
+	    			}
+	    			else{
+	    				count++;
+	    				/*
+	    				int x = i%tree_width;
+	    				int y = i/tree_width; 
+	    				Log.i("tree pixel", " tree trunk bottom pixel = " + trunk_bm.getPixel(x, y));
+	    				*/
+
+	    			}
+	    			
+
+	    		}
+	    		yep = false;
+	    		wait_count++;
+
+			}
+	    }
+	};
+	
+	Thread tree_thread_top = new Thread()
+	{
+	    @Override
+	    public void run() {
+	    	Boolean yep = true;
+	        while(yep) {
+	    		int tree_width = trunkt_bm.getWidth(), tree_height = trunkt_bm.getHeight();
+	    		// CHANGE TREE WIDTH AND HEIGHT TO BIRD WIDTH AND HEIGHT IT IS SO DECEIVING, THIS IS FOR BIRD NOT TREE!!!!!!!!!!!!!!!!
+	    		int[] pixels = new int[tree_width * tree_height]; // total number of pixels in this image
+	    		trunkt_bm.getPixels(pixels  , 0  ,   tree_width  /*stride either 0 or width idk*/  , 0  , 0  ,   tree_width ,    tree_height);	//populate pixels array 
+	    		Boolean red = false;
+	    		int count = 0;
+	    		for (int i = 0; i < pixels.length; i++){
+    				int x = i%tree_width;
+    				int y = i/tree_width; // hopefully this floors the double it should.
+    				
+	    			if ( pixels[i] >= -7011681  && pixels[i] < -1000 ){  // white equals this or -1, idk how they want represented, shouldn't matter
+
+	    				//Log.i("x & y  ", "x = " + x + " y = " + y);
+	    				//Log.i(" pixel length", " total= " + pixels.length + " width = " + tree_width + " height = " + tree_height) ;
+
+	    				trunkt_bm.setPixel(x, y, 0x00000000);
+	    				//dr_bm.setPixel(x, y,0xff00ff00); // shhould make green, test cuz of above transparent causing crash
+	    				//dr_bm.setPixel(0, 0, Color.TRANSPARENT);
+	    
+	    				
+	    			}
+	    			else{
+	    				count++;
+	    				/*
+	    				int x = i%tree_width;
+	    				int y = i/tree_width; 
+	    				Log.i("tree pixel", " tree trunk top pixel = " + trunkt_bm.getPixel(x, y));
+	    				*/
+
+	    				/*if (i > pixels.length/2){
+	    					trunkt_bm.setPixel(x, y,  -12303292 );
+	    				}*/
+	    			}
+	    			
+
+	    		}
+	    		yep = false;
+	    		wait_count++;
+			}
+	    }
+	};
+	
+	Thread bird_thread = new Thread()
+	{
+	    @Override
+	    public void run() {
+	    	Boolean yep = true;
+	        while(yep) {
+
+			 		int bird_width = dr_bm.getWidth(), bird_height = dr_bm.getHeight();
+					int[] pixels = new int[bird_width *  bird_height]; // total number of pixels in this image
+					dr_bm.getPixels(pixels  , 0  ,   bird_width  /*stride either 0 or width idk*/  , 0  , 0  ,   bird_width,    bird_height);	//populate pixels array 		
+					for (int i = 0; i < pixels.length; i++){
+						int x = i%bird_width;
+						int y = i/bird_width; // hopefully this floors the double it should.
+						
+						//this could be made so much more effiicent, sigh
+						if (x == 9 && y == 3){           rect_cornersX[0] = x;      rect_cornersY[0] = y; } 
+						else if (x == 6 && y == 103){    rect_cornersX[1] = x;      rect_cornersY[1] = y; }
+						else if (x == 172 && y == 3){    rect_cornersX[2] = x;      rect_cornersY[2] = y; } 
+						else if (x == 190 && y == 37){   rect_cornersX[3] = x;      rect_cornersY[3] = y; } 
+						else if (x == 190 && y == 100){  rect_cornersX[4] = x;      rect_cornersY[4] = y; } 
+						else if (x == 207 && y == 70){   rect_cornersX[5] = x;      rect_cornersY[5] = y;} 
+						else if (x == 200 && y == 151){  rect_cornersX[6] = x;      rect_cornersY[6] = y; } 
+						else if (x == 106 && y == 100){  rect_cornersX[7] = x;      rect_cornersY[7] = y; } 
+						else if (x == 146 && y == 120){  rect_cornersX[8] = x;      rect_cornersY[8] = y; } 
+						else if (x == 146 && y == 80){   rect_cornersX[9] = x;      rect_cornersY[9] = y; } 
+						else if (x == 117 && y == 37){   rect_cornersX[10] = x;     rect_cornersY[10] = y; } 
+						
+						if (pixels[i] >= -7011681  && pixels[i] < -1000){  // white equals this or -1, idk how they want represented, shouldn't matter
+							//Log.i("x & y  ", "x = " + x + " y = " + y);
+							//Log.i(" pixel length", " total= " + pixels.length + " width = " + tree_width + " height = " + tree_height) ;
+
+							dr_bm.setPixel(x, y, 0x00000000);
+							
+							//dr_bm.setPixel(x, y,0xff00ff00); // shhould make green, test cuz of above transparent causing crash
+							//dr_bm.setPixel(0, 0, Color.TRANSPARENT);
+						}
+
+					}
+					yep = false;
+					wait_count++;
+			}
+	    }
+	};
+	
+	Thread bird_wing_mid_thread = new Thread()
+	{
+	    @Override
+	    public void run() {
+	    	Boolean yep = true;
+	        while(yep) {
+
+			 		int bird_width = dr_bm_wing_mid.getWidth(), bird_height = dr_bm_wing_mid.getHeight();
+					int[] pixels = new int[bird_width *  bird_height]; // total number of pixels in this image
+					dr_bm_wing_mid.getPixels(pixels  , 0  ,   bird_width  /*stride either 0 or width idk*/  , 0  , 0  ,   bird_width,    bird_height);	//populate pixels array 		
+					for (int i = 0; i < pixels.length; i++){
+						if (pixels[i] >= -7011681  && pixels[i] < -1000){  // white equals this or -1, idk how they want represented, shouldn't matter
+							int x = i%bird_width;
+							int y = i/bird_width; // hopefully this floors the double it should.
+							//Log.i("x & y  ", "x = " + x + " y = " + y);
+							//Log.i(" pixel length", " total= " + pixels.length + " width = " + tree_width + " height = " + tree_height) ;
+
+							dr_bm_wing_mid.setPixel(x, y, 0x00000000);
+							//dr_bm.setPixel(x, y,0xff00ff00); // shhould make green, test cuz of above transparent causing crash
+							//dr_bm.setPixel(0, 0, Color.TRANSPARENT);
+						}
+
+					}
+					yep = false;
+					wait_count++;
+			}
+	    }
+	};
+	
+	Thread bird_wing_up_thread = new Thread()
+	{
+	    @Override
+	    public void run() {
+	    	Boolean yep = true;
+	        while(yep) {
+
+			 		int bird_width = dr_bm_wing_up.getWidth(), bird_height = dr_bm_wing_up.getHeight();
+					int[] pixels = new int[bird_width *  bird_height]; // total number of pixels in this image
+					dr_bm_wing_up.getPixels(pixels  , 0  ,   bird_width  /*stride either 0 or width idk*/  , 0  , 0  ,   bird_width,    bird_height);	//populate pixels array 		
+					for (int i = 0; i < pixels.length; i++){
+						if (pixels[i] >= -7011681  && pixels[i] < -1000){  // white equals this or -1, idk how they want represented, shouldn't matter
+							int x = i%bird_width;
+							int y = i/bird_width; // hopefully this floors the double it should.
+							//Log.i("x & y  ", "x = " + x + " y = " + y);
+							//Log.i(" pixel length", " total= " + pixels.length + " width = " + tree_width + " height = " + tree_height) ;
+
+							dr_bm_wing_up.setPixel(x, y, 0x00000000);
+							//dr_bm.setPixel(x, y,0xff00ff00); // shhould make green, test cuz of above transparent causing crash
+							//dr_bm.setPixel(0, 0, Color.TRANSPARENT);
+						}
+
+					}
+					yep = false;
+					wait_count++;
+			}
+	        
+	    }
+	};
+	
+
+    public void run1(){   //creates bitmap we will always use after the first bitmap runs on create
+    	//new thisThread().start();
+    	
+        Thread thisThread = new Thread()
+        {
+        	
+    	    @Override
+    	    public void run() {
+	            for (int i = 0; i < 5 ; i++){
+					   rand_num = rand.nextInt(700);
+					   //Log.i(" run1 ", " i = " + i + " rand_num = " + rand_num);
+					   // 0 = 4 , and 1 = 5, while 3 does not get redrawn on the switch, and 2 is skipped
+					   if (i ==0){
+						   bm2 = pasteOnTop(getBlankBm(), trunk_bm, trunkt_bm, first_tree_num,i );
+					   }
+					   
+					   else if( i == 1){
+						   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, second_tree_num ,i );
+					   }
+					   else if (i == 2){ 
+							  bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );	
+						  
+					   }
+					   else if (i ==3){
+						   first_tree_num = rand_num;  // second to last tree position to become first tree when we flip bitmaps
+						   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );
+						   
+					   }
+					   else if ( i == 4){
+						   second_tree_num = rand_num;  // last tree position to become second tree when we flip bitmaps
+						   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );
+					   }
+					   
+	            }
+
+           
+            }
+        };
+        thisThread.start();
+        Log.i(" thisThread Id", "thisThread ID = " + thisThread.getId() + "thisThread name = " + thisThread.getName());
+    }
+    
+
+    
+    
+    public void collisionCheck(){   //creates bitmap we will always use after the first bitmap runs on create
+    	//new thisThread2().start();
+    	
+    	/*
+    	
+        Thread thisThread2 = new Thread()
+        {
+    	    @Override
+    	    public void run() {
+				//this works !!!  :) :) : ) :) :) :)
+				//check the bird's pixel locations for the background witht the trees first to see if the pixel is transparent, if
+				//it is then no collision go to check next pixel. If it is not transparent then check the background with trees 
+				//image bird location pixel and see if it equals the background image w/out trees pixel, if not then a tree is drawn
+				//here and the bird is touching a tree, so a collision happened. 
+    	    	int temp_x = 0, temp_y = 0;
+				for(int c = 0 ; c < rect_cornersX.length ; c++){
+					if ( bm.getPixel(200 + rect_cornersX[c] + bubbleX*-1, circle_h + rect_cornersY[c]  ) != 0x00000000){
+						temp_x = 200 + rect_cornersX[c] + bubbleX*-1;  temp_y =  circle_h + rect_cornersY[c] ;
+						if ( bm.getPixel(temp_x,temp_y)   !=   getBlankBm().getPixel(temp_x ,temp_y)  ){
+								//canvas.drawCircle(250, 900, 300, paint);
+						}
+					}
+				}
+				collision_thread_count++;
+				//Log.i(" collsion vs collision_thread", " collision = " + collision_count + " collision_thread = " + collision_thread_count);
+				
+            }
+    	    
+        };
+        thisThread2.start();
+        Log.i(" thisThread2 Id", "thisThread2 ID = " + thisThread2.getId() + "thisThread2 name = " + thisThread2.getName());
+        */
+
+    }
+
+    /*
+    public class  thisThread extends Thread
+    {
+	    @Override
+	    public void run() {
+            for (int i = 0; i < 5 ; i++){
+				   rand_num = rand.nextInt(700);
+				   //Log.i(" run1 ", " i = " + i + " rand_num = " + rand_num);
+				   // 0 = 4 , and 1 = 5, while 3 does not get redrawn on the switch, and 2 is skipped
+				   if (i ==0){
+					   bm2 = pasteOnTop(bm_blank, trunk_bm, trunkt_bm, first_tree_num,i );
+				   }
+				   
+				   else if( i == 1){
+					   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, second_tree_num ,i );
+				   }
+				   else if (i == 2){ 
+						  bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );	
+					  
+				   }
+				   else if (i ==3){
+					   first_tree_num = rand_num;  // second to last tree position to become first tree when we flip bitmaps
+					   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );
+					   
+				   }
+				   else if ( i == 4){
+					   second_tree_num = rand_num;  // last tree position to become second tree when we flip bitmaps
+					   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );
+				   }
+				   
+            }
+
+       
+        }
+    };
+
+    public class thisThread2 extends Thread
+    {
+	    @Override
+	    public void run() {
+			//this works !!!  :) :) : ) :) :) :)
+			//check the bird's pixel locations for the background witht the trees first to see if the pixel is transparent, if
+			//it is then no collision go to check next pixel. If it is not transparent then check the background with trees 
+			//image bird location pixel and see if it equals the background image w/out trees pixel, if not then a tree is drawn
+			//here and the bird is touching a tree, so a collision happened. 
+	    	int temp_x = 0, temp_y = 0;
+			for(int c = 0 ; c < rect_cornersX.length ; c++){
+				if ( bm.getPixel(200 + rect_cornersX[c] + bubbleX*-1, circle_h + rect_cornersY[c]  ) != 0x00000000){
+					temp_x = 200 + rect_cornersX[c] + bubbleX*-1;  temp_y =  circle_h + rect_cornersY[c] ;
+					if ( bm.getPixel(temp_x,temp_y)   !=   bm_blank.getPixel(temp_x ,temp_y)  ){
+							//canvas.drawCircle(250, 900, 300, paint);
+					}
+				}
+			}
+        }
+	    
+    };
+
+	*/
+
+	    
+    
+	/* *************************************************************************************************** */
+	/* ********************             Bubble surface view class START         ************************** */   
+	/* *************************************************************************************************** */
+    
+    public class BubbleSurfaceView extends SurfaceView  
+	    							implements SurfaceHolder.Callback {
+    	private Context ctx = null;
+		private SurfaceHolder sh;
+
+		//private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		BubbleThread thread;
+			
+		public BubbleSurfaceView(Context context) {
+			super(context);
+			sh = getHolder();
+			sh.addCallback(this);
+			ctx = context;
+			setFocusable(true);
+		}
+		
+		public BubbleThread getThread(){
+			return thread;
+		}
+		
+		public void surfaceCreated(SurfaceHolder holder) {
+			/*
+			Canvas canvas = sh.lockCanvas();
+			canvas.drawColor(Color.BLACK);
+			canvas.drawCircle(100, 200, 50, paint);
+			sh.unlockCanvasAndPost(canvas);
+			*/
+			//do i need to remove 4 lines above? Ill come back
+		    thread = new BubbleThread(sh, ctx, new Handler());
+		    thread.setRunning(true);
+		    thread.start();
+		}
+		
+		public void surfaceChanged(SurfaceHolder holder, int format, int width,
+		int height) {
+			thread.setSurfaceSize(bm.getWidth(), bm.getHeight());
+		}
+		
+		public void surfaceDestroyed(SurfaceHolder holder) {
+			
+		    boolean retry = true;
+		    thread.setRunning(false);
+		    while (retry) {
+		      try {
+		        thread.join();
+		        retry = false;
+		      } catch (InterruptedException e) {
+		      }
+		    }
+		    
+		}
+		
+		
+	    /* ************************************************************************************ */
+	    /* ********************                   Bubble Thread START                 ********** */   
+	    /* ************************************************************************************** */
+		
+		class BubbleThread extends Thread {
+			  private static final int SPEED = 5;
+			  private boolean run = false;
+			  private int headingX;
+			  public Canvas c = null;//new Canvas();
+
+			  public BubbleThread(SurfaceHolder surfaceHolder, Context context,
+			         Handler handler) {
+			    sh = surfaceHolder;
+			    ctx = context;
+			  }
+			  
+			  public void doStart() {
+			    synchronized (sh) {
+			      bubbleX = 0;//canvasWidth ;/// 2;
+			      headingX = (int) (-2);   // negative makes canvas scroll to the right, pos goes left
+			    }
+			  }
+			  
+			  public void run() {
+			    while (run) {
+			      c = null;
+			      try {
+			        c = sh.lockCanvas(null);
+			        
+			        synchronized (sh) {
+			          doDraw(c);
+			        }
+			      } finally {
+			        if (c != null) {
+			          sh.unlockCanvasAndPost(c);
+			          c = null;
+			        }
+			      }
+			    }
+			  }
+			    
+			  public void setRunning(boolean b) { 
+			    run = b;
+			  }
+			  
+			  public void setSurfaceSize(int width, int height) {
+			    synchronized (sh) {
+			      doStart();
+			    }
+			  }
+			   
+			  private void doDraw(Canvas canvas) {
+				  
+				res = getResources();  
+
+				if (bubbleX <= width*-1 - over_width/4  ){ //just enough to reset the image so we pass the tree so we dont have to track it
+						 bubbleX = over_width/-4 ;
+	 					 bm =  bm2;
+				}   
+				if (bubble_bool == false){
+				bubbleX = bubbleX + (headingX * SPEED);
+				}
+				canvas.drawBitmap(bm, bubbleX, 0, null); 
+				//Log.i("canvas size = ", "canvas size = " + canvas.getWidth());
+				//Log.i("bitmap size = ", "bitmapsize = " + bm.getWidth());
+				circle_gravity= circle_up_count*circle_up_count ;
+				if (circle_up_count >0){ //screen clicked , circle rises up
+					circle_h +=-(circle_up_count*circle_up_count);
+				}
+				else{  // on the way down
+					circle_h +=-(circle_up_count/2 + circle_up_count/4);
+				}
+
+				
+				collisionCheck();  // did we hit a tree?
+				collision_count ++;
+				pause_collision_thread = true;
+				/*
+				if (doDraw_count==0){
+					collisionThread.start();
+				}
+				if(doDraw_count == 10){
+					pause_bm_thread = true;
+					prepareBmThread.start();
+				}
+				if (doDraw_count >10){
+		        	Log.i("collision thread ID", "collision thread id = " +  collisionThread.getId()
+		        			+ " collsion thread name = " + collisionThread.getName());
+		        	Log.i("PrepareBm Thread ID ", "prepareBm thread id = " +  prepareBmThread.getId()
+		        			+ " PrepareBm thread name = " + prepareBmThread.getName());
+		        	
+				}
+				*/
+				canvas.drawBitmap(dr_bm, 200, circle_h, null);		// draw bird
+				//canvas.drawBitmap(getWingMidBm(), 200 + 105, circle_h + bird_height/2 - 10, null);
+				canvas.drawBitmap(getWingUpBm(), 200 + 105, circle_h + bird_height/2 - 10, null);
+				/*
+				if(bird_flap <= 3){
+					//canvas.drawBitmap(dr_bm, 200, circle_h, null);		// draw bird
+				}
+				else if (bird_flap ==4 || bird_flap ==10 ){
+					//canvas.drawBitmap(dr_bm_wing_mid, 200, circle_h, null);		// draw bird wing mid
+					canvas.drawBitmap(getWingMidBm(), 200 + 105, circle_h + bird_height/2 - 10, null);
+					if (bird_flap == 10){ bird_flap = -1;} // start cycle over again
+				}
+				else if (bird_flap >= 6 || bird_flap <= 9){
+					//canvas.drawBitmap(dr_bm_wing_up, 200, circle_h, null);		// draw bird with wing up
+					canvas.drawBitmap(getWingUpBm(), 200 + 105, circle_h + bird_height/2 - 10, null);
+				}
+ 				*/
+				// width is = bitmap width, and the bird moves ten pixels each time, doDraw_count keeps track of each time,so, instead
+				//of width/3 its width/30, when the game starts it starts at 4th tree, 1st is at 0, 2nd at width * 1/3 and so on
+				if (doDraw_count%((width )/30) == bird_width/10 && doDraw_count > ((width/30) * 2) -1 ){
+					score++;
+				}
+				
+				if (score == 30){ bubble_bool = true;}
+
+				if (bubbleX <= over_width*-1 && bubbleX > over_width*-1  -10){
+						run1();
+						//pause_bm_thread = true;
+				}
+
+				bird_flap++;
+			    circle_up_count--; // reduce counts to raise the circle up, if its already upward bound
+			    doDraw_count+=1; 			    
+				canvas.drawText(Integer.toString(score), fast_draw_width/4, 130, paint_text);
+
+			  }
+			  
+		        Thread collisionThread = new Thread()
+		        {
+		    	    @Override
+		    	    public void run() {
+						//this works !!!  :) :) : ) :) :) :)
+						//check the bird's pixel locations for the background witht the trees first to see if the pixel is transparent, if
+						//it is then no collision go to check next pixel. If it is not transparent then check the background with trees 
+						//image bird location pixel and see if it equals the background image w/out trees pixel, if not then a tree is drawn
+						//here and the bird is touching a tree, so a collision happened. 
+		    	    	int temp_x = 0, temp_y = 0;
+		    	    	while (pause_collision_thread){
+							for(int c = 0 ; c < rect_cornersX.length ; c++){
+								if ( bm.getPixel(200 + rect_cornersX[c] + bubbleX*-1, circle_h + rect_cornersY[c]  ) != 0x00000000){
+									temp_x = 200 + rect_cornersX[c] + bubbleX*-1;  temp_y =  circle_h + rect_cornersY[c] ;
+									if ( bm.getPixel(temp_x,temp_y)   !=   getBlankBm().getPixel(temp_x ,temp_y)  ){
+											//canvas.drawCircle(250, 900, 300, paint);
+									}
+								}
+							}
+							//collision_thread_count++;
+							//Log.i(" collsion vs collision_thread", " collision = " + collision_count +
+							//" collision_thread = " + collision_thread_count);
+							pause_collision_thread = false;
+							while (pause_collision_thread == false){}
+		    	    	}
+		            }
+		    	    
+		        };
+		        
+		        Thread prepareBmThread = new Thread()
+		        {
+		        	
+		    	    @Override
+		    	    public void run() {
+		    	    	while(pause_bm_thread){
+			                for (int i = 0; i < 5 ; i++){
+			    				   rand_num = rand.nextInt(700);
+			    				   //Log.i(" run1 ", " i = " + i + " rand_num = " + rand_num);
+			    				   // 0 = 4 , and 1 = 5, while 3 does not get redrawn on the switch, and 2 is skipped
+			    				   if (i ==0){
+			    					   bm2 = pasteOnTop(getBlankBm(), trunk_bm, trunkt_bm, first_tree_num,i );
+			    				   }
+			    				   
+			    				   else if( i == 1){
+			    					   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, second_tree_num ,i );
+			    				   }
+			    				   else if (i == 2){ 
+			    						  bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );	
+			    					  
+			    				   }
+			    				   else if (i ==3){
+			    					   first_tree_num = rand_num;  // second to last tree position to become first tree when we flip bitmaps
+			    					   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );
+			    					   
+			    				   }
+			    				   else if ( i == 4){
+			    					   second_tree_num = rand_num;  // last tree position to become second tree when we flip bitmaps
+			    					   bm2 = pasteOnTop(bm2, trunk_bm, trunkt_bm, rand_num ,i );
+			    				   }
+			    				   
+			                }
+			                pause_bm_thread = false;
+			                while(pause_bm_thread == false){}
+		    	    	}
+	
+		            }
+		        };
+			  
+			}
+			
+		    /* ******************************************************************************************* */
+		    /* ********************                   Bubble Thread END                 **************** */   
+		    /* ******************************************************************************************* */
+		
+	}
+	
+    /* *************************************************************************************************** */
+    /* ********************             Bubble surface view class END           ************************** */   
+    /* *************************************************************************************************** */
+    
+
+    public boolean onTouch(View v, MotionEvent event) {
+		circle_up = true;
+		circle_up_count = 8;
+		Log.i(" doDraw info", "doDraw_count = " + doDraw_count + " bubleX = " + bubbleX + " tree_width = " + tree_width);
+    	return false;
+    }
+    
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap); 
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        canvas = null;
+        return bitmap;
+    }
+    
+    
+    public Bitmap combineImages(Bitmap c, Bitmap s) { 
+        Bitmap cs = null; 
+
+        int width, height = 0; 
+
+        if(c.getWidth() > s.getWidth()) { 
+          width = c.getWidth() + s.getWidth(); 
+          height = c.getHeight(); 
+        } else { 
+          width = s.getWidth() + s.getWidth(); 
+          height = c.getHeight(); 
+        } 
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); 
+
+        Canvas comboImage = new Canvas(cs); 
+
+        comboImage.drawBitmap(c, 0f, 0f, null); 
+        comboImage.drawBitmap(s, c.getWidth(), 0f, null);
+        comboImage = null;
+        return cs; 
+      } 
+    													//have not implemented divider
+    public Bitmap pasteOnTop(Bitmap under, Bitmap over, Bitmap over_top, int divider, int set) { 
+       Bitmap cs = null; 
+       under_width = under.getWidth(); under_height = under.getHeight();
+       over_width = over.getWidth(); over_height = over.getHeight();
+       over_top_width = over_top.getWidth(); over_top_height = over_top.getHeight();
+       //Log.i("under width", "under width = " + under_width + " bm_blank width = " + bm_blank.getWidth() + " bm2 = " + bm2.getWidth());
+       cs = Bitmap.createBitmap(under_width, under_height, Bitmap.Config.ARGB_8888); 
+
+       Canvas comboImage = new Canvas(cs); // I DID NOT KNOW YOU COULD INITIALIZE A CANVAS THIS WAY, makes a new canvas with bm = background
+       comboImage.drawBitmap(under, 0f, 0f, null); // 0f just mean zero is type float,      this is the background, trunks draw over it
+        
+       if (divider > 349){divider = (divider *-1) + 350;} // if random is 0-500 its pos, if 500-1000 its negative 0-500
+       int set_mult = under_width/2; //the bitmap is twice its normal length
+       set_mult = (set_mult * set)/3; // a tree every third of the bitmap
+
+       if (divider >=0){
+	        comboImage.drawBitmap(over, set_mult , under_height - over_height -divider , null);  //trunk bottom
+	        comboImage.drawBitmap(over_top,  set_mult -100 //top tree just drawn slightly more the right 
+	        		,under_height - over_height -divider - (bird_height*3) - bird_height/2 - over_top_height , null); //trunk top
+       }
+       else{
+	        comboImage.drawBitmap(over,  set_mult , under_height - over_height + (divider*-1) , null);  //trunk bottom
+	        comboImage.drawBitmap(over_top, set_mult - 100 , 
+	        		under_height - over_height + (divider*-1) - (bird_height*3) - bird_height/2 - over_top_height, null); //trunk top
+       }
+ 
+       over_top = null;
+       over = null; 
+       over_top = null;
+       under = null;
+       comboImage = null;
+       return cs; 
+      } 
+    
+    
+    
+    /* ********************************************************************************************************************************* */
+    /* ************************************               NOT USING ANYTHING BELOW REALLY                  ***************************** */
+    /* ********************************************************************************************************************************* */
+
+    
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            if (dir != null && dir.isDirectory()) {
+            	Log.i("cache size ", " cache size = " + dir.length() );
+                deleteDir(dir);
+            }
+        } catch (Exception e) {}
+    }
+
+    
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
+    
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+    
+
+	
+	
+
+    
+
+    
+}
+    

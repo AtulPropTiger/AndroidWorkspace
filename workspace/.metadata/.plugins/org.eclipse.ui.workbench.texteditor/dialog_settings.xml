@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="257" key="DIALOG_WIDTH"/>
+		<item value="234" key="DIALOG_Y_ORIGIN"/>
+		<item value="1020" key="DIALOG_X_ORIGIN"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="" key="selection"/>
+		<list key="findhistory">
+			<item value="mediaplayer"/>
+			<item value="alarm will go off"/>
+			<item value="calend"/>
+			<item value="caland"/>
+			<item value="gone"/>
+			<item value="visible"/>
+			<item value="startserv"/>
+			<item value="getwindow"/>
+		</list>
+		<list key="replacehistory">
+			<item value="RGB_565"/>
+			<item value="//debug modeLog.i("/>
+			<item value="elapsedRealtime ()"/>
+			<item value="current_unit_2"/>
+			<item value="current_unit_22"/>
+			<item value="miles_button"/>
+			<item value="miles_button_s"/>
+			<item value=""/>
+		</list>
+	</section>
+</section>

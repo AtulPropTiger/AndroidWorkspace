@@ -1,0 +1,56 @@
+package signature;
+
+public class MyBike implements bicycle{
+
+	MyBike bike;
+	int model_number;
+	String color;
+	double price;
+	String brand;
+	
+	public void MyBike(){
+		model_number = 0; color = ""; price = 0; brand = "";
+	}
+	
+	
+	@Override
+	public int modelNumber() {
+		
+		return 0;
+	}
+	
+	private void setModelNumber(){
+		
+	}
+
+	@Override
+	public int wheelSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setColor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double bikePrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String bikeBrand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public static void main(String args[]) {
+		
+		
+		
+	}
+
+}

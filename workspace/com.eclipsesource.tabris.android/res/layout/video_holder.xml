@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright(c) 2012 EclipseSource. All Rights Reserved. -->
+<com.eclipsesource.tabris.android.internal.toolkit.view.VideoHolder xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="0dp"
+    android:measureAllChildren="true"
+    android:padding="0dp" >
+
+    <com.eclipsesource.tabris.android.internal.toolkit.view.Video
+        android:id="@+id/videoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="88dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/videoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+
+</com.eclipsesource.tabris.android.internal.toolkit.view.VideoHolder>
