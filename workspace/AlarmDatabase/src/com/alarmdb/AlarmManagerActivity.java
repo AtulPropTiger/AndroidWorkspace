@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+
+import android.R;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -126,7 +128,7 @@ public class AlarmManagerActivity extends Activity {
     
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_widget_alarm_manager, menu);
+        getMenuInflater().inflate(R.menu.alarm_manager, menu);
         return true;
     }
 	
